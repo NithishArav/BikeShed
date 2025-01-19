@@ -3,6 +3,9 @@
  */
 import java.util.ArrayList;
 import java.time.LocalDate;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 
 /**
  * 
@@ -18,6 +21,7 @@ public class Bike
     private int key;
     private LocalDate date_;
     private boolean new_;
+    private boolean checkedIn;
     private String workDone;
 
     public static final int ID = 0;
@@ -29,13 +33,14 @@ public class Bike
     public static final int KEY = 6;
     public static final int DATE = 7;
     public static final int NEW = 8;
-    public static final int WORKDONE = 9;
+    public static final int CHECKEDIN = 9;
+    public static final int WORKDONE = 10;
 
     public static final int LESSTHAN = 0;
     public static final int GREATERTHAN = 1;
     public static final int EQUALTO = 2;
 
-    public static final int LENGTH = 10;
+    public static final int LENGTH = 11;
 
     public static final ArrayList<String> FILTERABLE_PARAMS = new ArrayList<String>() {
         {
@@ -59,6 +64,7 @@ public class Bike
             add(KEY);
             add(DATE);
             add(NEW);
+            add(CHECKEDIN);
             add(WORKDONE);
         }
     };
@@ -130,8 +136,8 @@ public class Bike
         key = Integer.parseInt(data[6]);
         date_ = LocalDate.parse(data[7]);
         new_ = Boolean.parseBoolean(data[8]);
-
-        workDone = data[9];
+        checkedIn = Boolean.parseBoolean(data[9]);
+        workDone = data[10];
     }
 
     /**
@@ -159,6 +165,7 @@ public class Bike
             Integer.toString(key),
             date_.toString(),
             Boolean.toString(new_),
+            Boolean.toString(checkedIn),
             workDone
         };
         return params;
@@ -197,6 +204,7 @@ public class Bike
             case KEY -> Integer.toString(key);
             case DATE -> date_.toString();
             case NEW -> Boolean.toString(new_);
+            case CHECKEDIN -> Boolean.toString(checkedIn);
             case WORKDONE -> workDone;
             default -> null;
         };
@@ -237,6 +245,8 @@ public class Bike
             case NEW:
                 new_ = Boolean.parseBoolean(val);
                 break;
+            case CHECKEDIN:
+                checkedIn = Boolean.parseBoolean(val);
             case WORKDONE:
                 workDone = val;
                 break;
@@ -259,7 +269,6 @@ public class Bike
             case ID -> {
                 return id == Integer.parseInt(other);
             }
-
             case MAKE -> compVar = make;
             case MODEL -> compVar = model;
             case COLOR -> compVar = color;
@@ -270,12 +279,14 @@ public class Bike
             case KEY -> {
                 return key == Integer.parseInt(other);
             }
-
             case DATE -> {
                 return date_.equals(LocalDate.parse(other));
             }
             case NEW -> {
                 return (new_ == Boolean.parseBoolean(other));
+            }
+            case CHECKEDIN -> {
+                return (checkedIn == Boolean.parseBoolean(other));
             }
             case WORKDONE -> compVar = workDone;
             default -> {

@@ -248,7 +248,7 @@ public class Database
 
         for (Bike b : db)
         {
-            returnString += b.toString();
+            returnString += b.toString() + "\n";
         }
 
         return returnString;
