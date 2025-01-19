@@ -3,9 +3,7 @@
  */
 import java.util.ArrayList;
 import java.time.LocalDate;
-import javax.swing.DefaultCellEditor;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
+import java.util.Arrays;
 
 /**
  * 
@@ -42,16 +40,16 @@ public class Bike
 
     public static final int LENGTH = 11;
 
-    public static final ArrayList<String> FILTERABLE_PARAMS = new ArrayList<String>() {
-        {
+    // public static final ArrayList<String> FILTERABLE_PARAMS = new ArrayList<String>() {
+    //     {
 
-        }
-    };
+    //     }
+    // };
 
-    public static final ArrayList<String> COMPARABLE_PARAMS = new ArrayList<String>() {
-    {
+    public static final ArrayList<Integer> FILTERABLE_PARAMS = new ArrayList<>(Arrays.asList(
+        DATE, NEW));
 
-    }};
+    public static final ArrayList<Integer> COMPARABLE_PARAMS = new ArrayList<>(Arrays.asList(DATE));
 
     public static final ArrayList<Integer> ALL_PARAMS = new ArrayList<Integer>() {
         {
@@ -71,10 +69,29 @@ public class Bike
 
     public static final int NUM_PARAMS = ALL_PARAMS.size();
 
+    public static final int STRING2PARAM(String param)
+    {
+        return switch (param)
+        {
+            case "id" -> 0;
+            case "make" -> 1;
+            case "model" -> 2;
+            case "color" -> 3;
+            case "serial" -> 4;
+            case "name" -> 5;
+            case "key" -> 6;
+            case "date" -> 7;
+            case "new" -> 8;
+            case "checked in" -> 9;
+            case "word done" -> 10;
+            default -> -1;
+        };
+    }
+
     /**
      * Returns true if parameter is defined in the Database filter method
      */
-    public static boolean isFilterableParam(String param)
+    public static boolean isFilterableParam(Integer param)
     {
         return FILTERABLE_PARAMS.contains(param);
     }
@@ -82,7 +99,7 @@ public class Bike
     /**
      * Returns true if parameter is defined in Database search and sort methods
      */
-    public static boolean isComprableParam(String param)
+    public static boolean isComprableParam(Integer param)
     {
         return COMPARABLE_PARAMS.contains(param);
     }
@@ -90,7 +107,7 @@ public class Bike
     /**
      * Returns true if parameter is defined as an attribute of Paper
      */
-    public static boolean isParam(int param)
+    public static boolean isParam(Integer param)
     {
         return ALL_PARAMS.contains(param);
     }
@@ -261,7 +278,7 @@ public class Bike
      * @param other String represention of the attribute to compare to
      * @return
      */
-    public boolean paramIs(int param, String other)
+    public boolean paramIsOLD(int param, String other)
     {
         String compVar;
         switch (param)
@@ -272,9 +289,7 @@ public class Bike
             case MAKE -> compVar = make;
             case MODEL -> compVar = model;
             case COLOR -> compVar = color;
-            case SERIAL -> {
-                return serial == Integer.parseInt(other);
-            }
+            case SERIAL -> {return serial == Integer.parseInt(other);}
             case NAME -> compVar = name;
             case KEY -> {
                 return key == Integer.parseInt(other);
@@ -295,6 +310,16 @@ public class Bike
         }
         return compVar.equalsIgnoreCase(other);
     }
+
+    public boolean paramIs(int param, String other)
+    {
+        // return switch (param)
+        // {
+        //     case ID, KEY -> ;
+        //     default -> false;
+        // };
+        return other.equalsIgnoreCase(get(param));
+    }
     
     /**
      * Returns a negative integer if less than, 0 if equals, and positive integer if greater than
@@ -302,45 +327,55 @@ public class Bike
      * @param other String represention of the attribute to compare to
      * @return
      */
+    // public int compareParamOLD(int param, String other)
+    // {
+    //     int compResult;
+    //     switch (param)
+    //     {
+    //         case ID:
+    //             return id - Integer.parseInt(other);
+    //         case TITLE:
+    //             return make.compareToIgnoreCase(other);
+    //         case AUTHOR:
+    //             String[] otherAuthor = other.substring(1, other.length()-1).split(",");
+    //             compResult = author[1].compareToIgnoreCase(otherAuthor[1]);
+    //             if (compResult != 0)
+    //             {
+    //                 return compResult;
+    //             }
+    //             else
+    //             {
+    //                 return author[0].compareToIgnoreCase(otherAuthor[0]);
+    //             }
+    //         case COLOR:
+    //             compResult = 1;
+    //             String[] otherArr = other.substring(1, other.length()-1).split(",");
+    //             for (int x = 0; ((compResult != 0) 
+    //                           && (compResult < field.size()) 
+    //                           && (compResult < otherArr.length)); x++)
+    //             {
+    //                 compResult = field.get(x).compareToIgnoreCase(otherArr[x]);
+    //             }
+    //             return compResult;
+    //         case DATE:
+    //             return publishDate.compareTo(LocalDate.parse(other));
+    //         case JOURNAL:
+    //             return journal.compareToIgnoreCase(other);
+    //         case RATING:
+    //             int otherInt = Integer.valueOf(other);
+    //             return rating - otherInt;
+    //         default:
+    //             return "".compareTo(other);
+    // }
+
     public int compareParam(int param, String other)
     {
-        // int compResult;
-        // switch (param)
-        // {
-        //     case ID:
-        //         return id - Integer.parseInt(other);
-        //     case TITLE:
-        //         return make.compareToIgnoreCase(other);
-        //     case AUTHOR:
-        //         String[] otherAuthor = other.substring(1, other.length()-1).split(",");
-        //         compResult = author[1].compareToIgnoreCase(otherAuthor[1]);
-        //         if (compResult != 0)
-        //         {
-        //             return compResult;
-        //         }
-        //         else
-        //         {
-        //             return author[0].compareToIgnoreCase(otherAuthor[0]);
-        //         }
-        //     case COLOR:
-        //         compResult = 1;
-        //         String[] otherArr = other.substring(1, other.length()-1).split(",");
-        //         for (int x = 0; ((compResult != 0) 
-        //                       && (compResult < field.size()) 
-        //                       && (compResult < otherArr.length)); x++)
-        //         {
-        //             compResult = field.get(x).compareToIgnoreCase(otherArr[x]);
-        //         }
-        //         return compResult;
-        //     case DATE:
-        //         return publishDate.compareTo(LocalDate.parse(other));
-        //     case JOURNAL:
-        //         return journal.compareToIgnoreCase(other);
-        //     case RATING:
-        //         int otherInt = Integer.valueOf(other);
-        //         return rating - otherInt;
-        //     default:
-        //         return "".compareTo(other);
-        return 0;
+        return switch (param)
+        {
+            case MAKE, MODEL, COLOR, NAME -> get(param).compareTo(other);
+            case ID, SERIAL, KEY -> Integer.parseInt(get(param)) - Integer.parseInt(other);
+            case DATE -> date_.compareTo(LocalDate.parse(other));
+            default -> 0;
+        };
     }
 }

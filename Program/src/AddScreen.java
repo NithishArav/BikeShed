@@ -107,6 +107,8 @@ public class AddScreen extends JPanel implements Screen
     {
         qNum = 0;
         questionPane.setText(questions[qNum]);
+        answerPane.setText("");
+        nextButton.setEnabled(true);
         backButton.setEnabled(false);
         submit.setEnabled(false);
         answers[0] = Integer.toString(v.getSize());
@@ -118,6 +120,9 @@ public class AddScreen extends JPanel implements Screen
         String input = answerPane.getText();
         input = input.trim();
         switch (qNum) {
+            case 2:
+                input = input.toLowerCase();
+                break;
             case 6:
                 try
                 {

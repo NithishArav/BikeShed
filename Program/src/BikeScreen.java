@@ -208,6 +208,7 @@ public class BikeScreen extends JPanel implements Screen
             {
                 bike[9] = Boolean.toString(false);
             }
+            bike[2] = bike[2].toLowerCase();
             v.edit(bike);
             home.setEnabled(true);
             delete.setEnabled(true);

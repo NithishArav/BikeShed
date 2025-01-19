@@ -14,8 +14,6 @@ public class SearchScreen extends JPanel implements Screen
     JTextField searchInput;
     JButton searchButton;
     JComboBox<String> searchParam;
-    JComboBox<String> sortParam;
-    JComboBox<String> sortInput;
     JComboBox<String> filterParam;
     JComboBox<String> filterInput;
     JTextField filterValue;
@@ -29,38 +27,33 @@ public class SearchScreen extends JPanel implements Screen
     private String[] chosen = new String[7];
     private LinkedHashMap<String, String> searchItems = new LinkedHashMap<>();
 
-    private LinkedHashMap<String, String> comparableItems = new LinkedHashMap<>();
-    private LinkedHashMap<String, String[]> sortItems = new LinkedHashMap<>();
-
+    private LinkedHashMap<String, String> filterParams = new LinkedHashMap<>();
     private LinkedHashMap<String, String[]> filterItems = new LinkedHashMap<>();
 
     final static String STR = "string";
     final static String DATE = "date";
     final static String INT = "int";
+    final static String BOOL = "bool";
 
     View v;
 
     public SearchScreen(View view, ActionListener mainListener, ActionListener paperListener)
     {
         v = view;
+        searchItems.put("see all", STR);
         searchItems.put("make", STR);
         searchItems.put("model", STR);
         searchItems.put("color", STR);
         searchItems.put("date", DATE);
 
-        comparableItems.put("make", STR);
-        comparableItems.put("author", STR);
-        comparableItems.put("field", STR);
-        comparableItems.put("date", DATE);
-        comparableItems.put("rating", INT);
-
-        sortItems.put(STR, new String[] {"no sort", "A - Z", "Z- A"});
-        sortItems.put(DATE, new String[] {"no sort", "oldest", "newest"});
-        sortItems.put(INT, new String[] {"no sort", "increasing", "decreasing"});
+        filterParams.put("date", DATE);
+        filterParams.put("new", BOOL);
+        filterParams.put("checked in", BOOL);
 
         filterItems.put(STR, new String[] {"no filter", "lexographically before", "lexographically after"});
         filterItems.put(DATE, new String[] {"no filter", "older than", "younger than"});
         filterItems.put(INT, new String[] {"no filter", "less than", "greater than"});
+        filterItems.put(BOOL, new String[] {"is", "is not"});
 
         // this.paperListener = paperListener;
 
@@ -79,72 +72,65 @@ public class SearchScreen extends JPanel implements Screen
         add(new JLabel("Search in:"), v.getConstraint(0, 2));
         searchParam = new JComboBox<>(searchItems.keySet().toArray(new String[searchItems.size()]));
         add(searchParam, v.getConstraint(0, 3));
-
-        add(new JLabel("Sort by: "), v.getConstraint(1, 2));
-        sortParam = new JComboBox<>(comparableItems.keySet().toArray(new String[comparableItems.size()]));
-        sortInput = new JComboBox<>(sortItems.get(STR));
-        sortParam.addActionListener((ActionEvent e) -> {
-            @SuppressWarnings("unchecked")
-                    JComboBox<String> cb = (JComboBox<String>)e.getSource();
-            String selectedItem = (String)cb.getSelectedItem();
-            sortInput.setModel(new DefaultComboBoxModel<>(sortItems.get(comparableItems.get(selectedItem))));
-        });
-        add(sortParam, v.getConstraint(1, 3));
-        add(sortInput, v.getConstraint(2, 3));
         
-        add(new JLabel("Filter by:"), v.getConstraint(3, 2));
-        filterParam = new JComboBox<>(comparableItems.keySet().toArray(new String[comparableItems.size()]));
-        filterInput = new JComboBox<>(filterItems.get(STR));
+        add(new JLabel("Filter by:"), v.getConstraint(1, 2));
+        filterParam = new JComboBox<>(filterParams.keySet().toArray(new String[filterParams.size()]));
+        filterInput = new JComboBox<>(filterItems.get(DATE));
         filterValue = new JTextField(5);
 
         filterParam.addActionListener((ActionEvent e) -> {
             @SuppressWarnings("unchecked")
                     JComboBox<String> cb = (JComboBox<String>)e.getSource();
             String selectedItem = (String)cb.getSelectedItem();
-            filterInput.setModel(new DefaultComboBoxModel<>(filterItems.get(comparableItems.get(selectedItem))));
+            filterInput.setModel(new DefaultComboBoxModel<>(filterItems.get(filterParams.get(selectedItem))));
         });
         filterValue.addActionListener((ActionEvent e) -> {
             JTextField field = (JTextField)e.getSource();
             String input = field.getText();
             chosen[6] = input;
         });
-        add(filterParam, v.getConstraint(3, 3));
-        add(filterInput, v.getConstraint(4, 3));
-        add(filterValue, v.getConstraint(5, 3));
+        add(filterParam, v.getConstraint(1, 3));
+        add(filterInput, v.getConstraint(2, 3));
+        add(filterValue, v.getConstraint(3, 3));
 
         JLabel myLabel = new JLabel("Hello there!");
         JLabel noResult = new JLabel("No results found");
 
         searchButton = new JButton("Search");
         searchButton.addActionListener((ActionEvent e) -> {
-            chosen[0] = searchInput.getText();
-            chosen[1] = (String)searchParam.getSelectedItem();
-            chosen[2] = (String)sortParam.getSelectedItem();
-            chosen[3] = Integer.toString(sortInput.getSelectedIndex());
-            chosen[4] = (String)filterParam.getSelectedItem();
-            chosen[5] = Integer.toString(filterInput.getSelectedIndex());
-            chosen[6] = filterValue.getText();
+            if (searchParam.getSelectedIndex() == 0)
+            {
+                chosen[0] = "SEARCH%ALL";
+            }
+            else
+            {
+                chosen[0] = searchInput.getText();
+            }
+            chosen[1] = Integer.toString(Bike.STRING2PARAM((String)searchParam.getSelectedItem()));
+            chosen[2] = Integer.toString(Bike.STRING2PARAM((String)filterParam.getSelectedItem()));
+            chosen[3] = Integer.toString(filterInput.getSelectedIndex());
+            chosen[4] = filterValue.getText();
             
             String[][] searchResult = v.getSearchResult(chosen);
             if (searchResult.length == 0)
             {
                 dbPane.setViewportView(noResult);
-                add(dbPane, v.getConstraint(0, 5, 6));
+                add(dbPane, v.getConstraint(0, 5, 4));
             }
             else
             {
                 listPane = new ListPane(searchResult, v);
                 dbPane.setViewportView(listPane);
-                add(dbPane, v.getConstraint(0, 5, 6));
+                add(dbPane, v.getConstraint(0, 5, 4));
             }
             v.update();
         });
 
-        add(searchButton, v.getConstraint(0, 4, 6));
+        add(searchButton, v.getConstraint(0, 4, 4));
 
         dbPane = new JScrollPane(myLabel);
         dbPane.setPreferredSize(new Dimension(v.getScreenWidth()-20, v.getScreenHeight()-400));
-        add(dbPane, v.getConstraint(0, 5, 6));
+        add(dbPane, v.getConstraint(0, 5, 4));
     }
 
     public void active() {

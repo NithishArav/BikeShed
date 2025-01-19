@@ -11,7 +11,7 @@ public class ListPane extends JScrollPane
     View v;
     // private static final int NUM_PARAMS = Bike.LENGTH;
     final static String[] header = new String[] {
-        "Date", "Name", "Make", "Model", "Color", "Checked Out", " "
+        "Date", "Name", "Make", "Model", "Color", "Checked In", " "
     };
     public ListPane()
     {
@@ -58,6 +58,7 @@ public class ListPane extends JScrollPane
         table.getColumn(" ").setCellRenderer(new ButtonRenderer());
         table.getColumn(" ").setCellEditor(new ButtonEditor());
         table.getColumn(" ").setMaxWidth(40);
+        table.setAutoCreateRowSorter(true);
         return table;
     }
 }

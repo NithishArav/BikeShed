@@ -1,6 +1,6 @@
 ## Changes
-Deleting code that is hopefully unnecessary from ListPane
-Added launch.json to .vscode directory
+Added code to Bike class comparative methods
+Added AutoSort to JTable, removed sorting from SearchScreen
 
 ## To do:
 Fix missing functions in Bike
@@ -8,6 +8,12 @@ Generate report file
 Implement change log to allow users to undo changes
 Add documentation
 If toString in Database is uneeded, delete and replace with asString
+
+Once checked out, change new to false
+Automatically assume true when registered
+
+rmdir C:\Users\wardJ\AppData\Local\BikeShed \s
+powershell.exe "Expand-Archive -LiteralPath D:\BikeShed.zip -DestinationPath C:\Users\wardJ\AppData\Local\BikeShed"
 
 ## Class Hierarchy
 Component Classes -> View -> Main

@@ -84,24 +84,19 @@ public class View
     public String[][] getSearchResult(String[] searchParams)
     {
         Database returnDb;
-        returnDb = db.search(Integer.parseInt(searchParams[1]), searchParams[0]);
+        System.out.println(searchParams[0]);
+        if (searchParams[0].equals("SEARCH%ALL"))
+            returnDb = db;
+        else
+            returnDb = db.search(Integer.parseInt(searchParams[1]), searchParams[0]);
 
         if (searchParams[3].equals("1"))
         {
-            returnDb = returnDb.sort(Integer.parseInt(searchParams[2]), true);
+            returnDb = returnDb.filter(Integer.parseInt(searchParams[2]), searchParams[4], "<");
         }
         else if (searchParams[3].equals("2"))
         {
-            returnDb = returnDb.sort(Integer.parseInt(searchParams[2]), false);
-        }
-
-        if (searchParams[5].equals("1"))
-        {
-            returnDb = returnDb.filter(Integer.parseInt(searchParams[4]), searchParams[6], "<");
-        }
-        else if (searchParams[5].equals("2"))
-        {
-            returnDb = returnDb.filter(Integer.parseInt(searchParams[4]), searchParams[6], ">");
+            returnDb = returnDb.filter(Integer.parseInt(searchParams[2]), searchParams[4], ">");
         }
 
         return returnDb.as2DArray();
