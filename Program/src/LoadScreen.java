@@ -12,6 +12,7 @@ public class LoadScreen extends JPanel implements Screen
         add(new JLabel("Loading . . ."));
     }
 
+    @Override
     public void reset()
     {
 

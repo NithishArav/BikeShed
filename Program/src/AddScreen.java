@@ -2,7 +2,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-
 import javax.swing.*;
 
 
@@ -59,59 +58,47 @@ public class AddScreen extends JPanel implements Screen
         add(answerPane, v.getConstraint(0, 2, 2));
 
         nextButton = new JButton("next");
-        nextButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e)
+        nextButton.addActionListener((ActionEvent e) -> {
+            if (updateAnswers())
             {
-                if (updateAnswers())
+                qNum++;
+                questionPane.setText(questions[qNum]);
+                answerPane.setText("");
+                answerPane.setCaretPosition(0);
+                if (qNum+1 == 9)
                 {
-                    qNum++;
-                    questionPane.setText(questions[qNum]);
-                    answerPane.setText("");
-                    answerPane.setCaretPosition(0);
-                    if (qNum+1 == 9)
-                    {
-                        nextButton.setEnabled(false);
-                        submit.setEnabled(true);
-                    }
-                    backButton.setEnabled(true);
+                    nextButton.setEnabled(false);
+                    submit.setEnabled(true);
                 }
+                backButton.setEnabled(true);
             }
         });
         add(nextButton, v.getConstraint(1, 3));
 
         backButton = new JButton("back");
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e)
+        backButton.addActionListener((ActionEvent e) -> {
+            if (updateAnswers())
             {
-                if (updateAnswers())
+                qNum--;
+                questionPane.setText(questions[qNum]);
+                answerPane.setText("");
+                answerPane.setCaretPosition(0);
+                if (qNum-1 == 0)
                 {
-                    qNum--;
-                    questionPane.setText(questions[qNum]);
-                    answerPane.setText("");
-                    answerPane.setCaretPosition(0);
-                    if (qNum-1 == 0)
-                    {
-                        backButton.setEnabled(false);
-                    }
+                    backButton.setEnabled(false);
                 }
-                nextButton.setEnabled(true);
-                submit.setEnabled(false);
             }
+            nextButton.setEnabled(true);
+            submit.setEnabled(false);
         });
         add(backButton, v.getConstraint(0, 3));
 
         submit = new JButton("submit");
         submit.setEnabled(false);
-        submit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                answers[qNum+1] = answerPane.getText();
-                v.add(answers);
-                mainListener.actionPerformed(e);
-            }
+        submit.addActionListener((ActionEvent e) -> {
+            answers[qNum+1] = answerPane.getText();
+            v.add(answers);
+            mainListener.actionPerformed(e);
         });
         add(submit, v.getConstraint(0, 4));
     }
@@ -130,26 +117,30 @@ public class AddScreen extends JPanel implements Screen
     {
         String input = answerPane.getText();
         input = input.trim();
-        if (qNum == 6)
-        {
-            try
-            {
-                LocalDate.parse(input);
-            }
-            catch (DateTimeParseException e)
-            {
-                JOptionPane.showMessageDialog(v.frame, "Invalid date format\nPlease use YYYY-MM-DD");
-                return false;
-            }
-        }
-        else if (qNum == 7)
-        {
-            input = input.toLowerCase();
-            if (!(input.equals("true") || input.equals("false")))
-            {
-                JOptionPane.showMessageDialog(v.frame, "Invalid boolean format, please type either true or false");
-                return false;
-            }
+        switch (qNum) {
+            case 6:
+                try
+                {
+                    LocalDate.parse(input);
+                }
+                catch (DateTimeParseException e)
+                {
+                    JOptionPane.showMessageDialog(v.frame, "Invalid date format\nPlease use YYYY-MM-DD");
+                    return false;
+                }   break;
+            case 7:
+                input = input.toLowerCase();
+                if (!(input.equals("true") || input.equals("false")))
+                {
+                    JOptionPane.showMessageDialog(v.frame, "Invalid boolean format, please type either true or false");
+                    return false;
+                }   break;
+            case 9:
+                qNum++;
+                answers[qNum] = "true";
+                break;
+            default:
+                break;
         }
         answers[qNum+1] = input;
         return true;

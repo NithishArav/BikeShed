@@ -18,6 +18,7 @@ public class Bike
     private int key;
     private LocalDate date_;
     private boolean new_;
+    private boolean checkedIn;
     private String workDone;
 
     public static final int ID = 0;
@@ -29,13 +30,14 @@ public class Bike
     public static final int KEY = 6;
     public static final int DATE = 7;
     public static final int NEW = 8;
-    public static final int WORKDONE = 9;
+    public static final int CHECKEDIN = 9;
+    public static final int WORKDONE = 10;
 
     public static final int LESSTHAN = 0;
     public static final int GREATERTHAN = 1;
     public static final int EQUALTO = 2;
 
-    public static final int LENGTH = 10;
+    public static final int LENGTH = 11;
 
     public static final ArrayList<String> FILTERABLE_PARAMS = new ArrayList<String>() {
         {
@@ -59,6 +61,7 @@ public class Bike
             add(KEY);
             add(DATE);
             add(NEW);
+            add(CHECKEDIN);
             add(WORKDONE);
         }
     };
@@ -70,11 +73,7 @@ public class Bike
      */
     public static boolean isFilterableParam(String param)
     {
-        if (FILTERABLE_PARAMS.contains(param))
-        {
-            return true;
-        }
-        return false;
+        return FILTERABLE_PARAMS.contains(param);
     }
 
     /**
@@ -82,11 +81,7 @@ public class Bike
      */
     public static boolean isComprableParam(String param)
     {
-        if (COMPARABLE_PARAMS.contains(param))
-        {
-            return true;
-        }
-        return false;
+        return COMPARABLE_PARAMS.contains(param);
     }
 
     /**
@@ -94,11 +89,7 @@ public class Bike
      */
     public static boolean isParam(int param)
     {
-        if (ALL_PARAMS.contains(param))
-        {
-            return true;
-        }
-        return false;
+        return ALL_PARAMS.contains(param);
     }
 
     /**
@@ -142,8 +133,8 @@ public class Bike
         key = Integer.parseInt(data[6]);
         date_ = LocalDate.parse(data[7]);
         new_ = Boolean.parseBoolean(data[8]);
-
-        workDone = data[9];
+        checkedIn = Boolean.parseBoolean(data[9]);
+        workDone = data[10];
     }
 
     /**
@@ -171,6 +162,7 @@ public class Bike
             Integer.toString(key),
             date_.toString(),
             Boolean.toString(new_),
+            Boolean.toString(checkedIn),
             workDone
         };
         return params;
@@ -180,6 +172,7 @@ public class Bike
      * Returns all object attributes delimited using semicolons
      * @return dumpString
      */
+    @Override
     public String toString()
     {
         String dumpString = "";
@@ -198,31 +191,20 @@ public class Bike
      */
     public String get(int param)
     {
-        switch (param)
-        {
-            case ID:
-                return Integer.toString(id);
-            case MAKE:
-                return make;
-            case MODEL:
-                return model;
-            case COLOR:
-                return color;
-            case SERIAL:
-                return Integer.toString(serial);
-            case NAME:
-                return name;
-            case KEY:
-                return Integer.toString(key);
-            case DATE:
-                return date_.toString();
-            case NEW:
-                return Boolean.toString(new_);
-            case WORKDONE:
-                return workDone;
-            default:
-                return null;
-        }
+        return switch (param) {
+            case ID -> Integer.toString(id);
+            case MAKE -> make;
+            case MODEL -> model;
+            case COLOR -> color;
+            case SERIAL -> Integer.toString(serial);
+            case NAME -> name;
+            case KEY -> Integer.toString(key);
+            case DATE -> date_.toString();
+            case NEW -> Boolean.toString(new_);
+            case CHECKEDIN -> Boolean.toString(checkedIn);
+            case WORKDONE -> workDone;
+            default -> null;
+        };
     }
 
     /**
@@ -260,6 +242,8 @@ public class Bike
             case NEW:
                 new_ = Boolean.parseBoolean(val);
                 break;
+            case CHECKEDIN:
+                checkedIn = Boolean.parseBoolean(val);
             case WORKDONE:
                 workDone = val;
                 break;
@@ -276,50 +260,37 @@ public class Bike
      */
     public boolean paramIs(int param, String other)
     {
-        String compVar = "";
+        String compVar;
         switch (param)
         {
-            case ID:
-                if (id == Integer.parseInt(other))
-                {
-                    return true;
-                }
-                return false;
-            case MAKE:
-                compVar = make;
-                break;
-            case MODEL:
-                compVar = model;
-                break;
-            case COLOR:
-                compVar = color;
-                break;
-            case SERIAL:
+            case ID -> {
+                return id == Integer.parseInt(other);
+            }
+            case MAKE -> compVar = make;
+            case MODEL -> compVar = model;
+            case COLOR -> compVar = color;
+            case SERIAL -> {
                 return serial == Integer.parseInt(other);
-            case NAME:
-                compVar = name;
-                break;
-            case KEY:
-                if (key == Integer.parseInt(other))
-                {
-                    return true;
-                }
-                return false;
-            case DATE:
+            }
+            case NAME -> compVar = name;
+            case KEY -> {
+                return key == Integer.parseInt(other);
+            }
+            case DATE -> {
                 return date_.equals(LocalDate.parse(other));
-            case NEW:
+            }
+            case NEW -> {
                 return (new_ == Boolean.parseBoolean(other));
-            case WORKDONE:
-                compVar = workDone;
-                break;
-            default:
+            }
+            case CHECKEDIN -> {
+                return (checkedIn == Boolean.parseBoolean(other));
+            }
+            case WORKDONE -> compVar = workDone;
+            default -> {
                 return false;
+            }
         }
-        if (compVar.equalsIgnoreCase(other))
-        {
-            return true;
-        }
-        return false;
+        return compVar.equalsIgnoreCase(other);
     }
     
     /**

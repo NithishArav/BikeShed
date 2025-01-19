@@ -1,5 +1,4 @@
 import java.awt.*;
-
 import javax.swing.*;
 
 /**
@@ -7,7 +6,7 @@ import javax.swing.*;
  */
 public class ListPane extends JScrollPane
 {
-    String[][] list;
+    // String[][] list;
     View v;
     // private static final int NUM_PARAMS = Bike.LENGTH;
     public ListPane()

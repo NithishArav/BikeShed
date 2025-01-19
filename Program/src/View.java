@@ -128,6 +128,7 @@ public class View
             this.vals = paperValues;
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             for (Component c : pane.getComponents())
@@ -157,10 +158,10 @@ public class View
             {
                 switch (command)
                 {
-                    case PAPER:
+                    case PAPER -> {
                         paperScreen.active(vals);
                         cards.show(pane, PAPERPANEL);
-                        break;
+                    }
                 }
             }
         }
@@ -209,7 +210,7 @@ public class View
             throw new IndexOutOfBoundsException("Edit paper has length " + newPaper.length 
                                                 + " should be " + Bike.LENGTH);
         }
-        db.edit(Integer.valueOf(newPaper[0]), newPaper);
+        db.edit(Integer.parseInt(newPaper[0]), newPaper);
     }
 
     public void delete(int index)
@@ -233,7 +234,7 @@ public class View
             // Private constructor to prevent direct instantiation
         }
 
-        public static GridBagConstraints get(int gridx, int gridy, int gridwidth, int anchor)
+        private static GridBagConstraints get(int gridx, int gridy, int gridwidth, int anchor)
         {
             if (self == null)
             {

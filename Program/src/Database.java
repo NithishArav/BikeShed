@@ -1,9 +1,9 @@
 /**
  * @author  Nithish Aravinthan
  */
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.io.*;
 
 /**
  * Loads, edits, and saves the database of Paper objects
@@ -20,7 +20,7 @@ public class Database
      */
     public Database()
     {
-        db = new ArrayList<Bike>();
+        db = new ArrayList<>();
     }
 
     /**
@@ -101,7 +101,7 @@ public class Database
     {
         if (data.length == Bike.LENGTH)
         {
-            ArrayList<String> tempArray = new ArrayList<String>();
+            ArrayList<String> tempArray = new ArrayList<>();
             tempArray.add(Integer.toString(size()));
             tempArray.addAll(Arrays.asList(data));
 
@@ -169,7 +169,7 @@ public class Database
     {
         // using insertion sort
         int index = 0;
-        int compResult = 0;
+        int compResult;
         Database returnDb = new Database();
         for (int i = 0; i < db.size(); i++)
         {
@@ -248,7 +248,7 @@ public class Database
 
         for (Bike b : db)
         {
-            returnString += b.toString();
+            returnString += b.toString() + "\n";
         }
 
         return returnString;

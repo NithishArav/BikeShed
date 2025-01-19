@@ -1,20 +1,21 @@
 ## Changes
-Took changes from v0.0 and added to version of program that had proper bike attributes
-Added weights to View.GridBagConstraints to allow for formatting
+Added check in system
+Found and fixed bug: Saving did not add line in CSV between two bikes
 
 ## To do:
 Home screen
 Date | Name | ...
 
-Put name first on edit screen
-
 Add check out/check in system
 Show on main screen
 
+
+Change to JTable
+Fix missing functions in Bike
 Generate report file
 Implement change log to allow users to undo changes
 Add documentation
-Change to JTable
+If toString in Database is uneeded, delete and replace with asString
 
 ## Class Hierarchy
 Component Classes -> View -> Main

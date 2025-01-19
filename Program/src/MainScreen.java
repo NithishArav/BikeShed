@@ -1,6 +1,6 @@
 import java.awt.*;
-import javax.swing.*;
 import java.awt.event.*;
+import javax.swing.*;
 
 
 /**
@@ -14,7 +14,7 @@ public class MainScreen extends JPanel implements Screen
     JButton addButton;
     ListPane dbPane;
 
-    ActionListener paperListener;
+    // ActionListener paperListener;
     View v;
 
     public MainScreen(View view, ActionListener searchListener, ActionListener addListener, ActionListener paperListener)
@@ -22,50 +22,32 @@ public class MainScreen extends JPanel implements Screen
         v = view;
         setLayout(new GridBagLayout());
 
-        this.paperListener = paperListener;
+        // this.paperListener = paperListener;
         logo = new JLabel("Bicycle Database");
-
-        GridBagConstraints c;
-        c = new GridBagConstraints() {
-            {
-                gridx = 0;
-                gridy = 0;
-                gridheight = 2;
-            }};
+        logo.setFont(new Font("Georgia", Font.PLAIN, 36));
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridheight = 2;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
         add(logo, c);
 
         searchButton = new JButton("Search");
         searchButton.setActionCommand("search");
         searchButton.addActionListener(searchListener);
-        c = new GridBagConstraints() {
-            {
-                gridx = 1;
-                gridy = 0;
-            }};
-        add(searchButton, c);
+        add(searchButton, v.getConstraint(1, 0));
 
         addButton = new JButton("Register Bicycle");
-        // searchButton.setActionCommand("add");
         addButton.addActionListener(addListener);
-        c = new GridBagConstraints() {
-            {
-                gridx = 1;
-                gridy = 1;
-            }};
-        add(addButton, c);
+        add(addButton, v.getConstraint(1, 1));
     }
 
     public void setDatabase(String[][] db)
     {
         dbPane = new ListPane(db, v);
         dbPane.setPreferredSize(new Dimension((int)Toolkit.getDefaultToolkit().getScreenSize().getWidth(), (int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight() - 300)));
-        GridBagConstraints c = new GridBagConstraints() {
-            {
-                gridx = 0;
-                gridy = 2;
-                gridwidth = 2;
-            }};
-        add(dbPane, c);
+        add(dbPane, v.getConstraint(0, 2, 2));
     }
 
     public void update()
@@ -78,6 +60,7 @@ public class MainScreen extends JPanel implements Screen
 
     }
     
+    @Override
     public void reset()
     {
 
