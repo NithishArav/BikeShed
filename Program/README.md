@@ -1,15 +1,8 @@
 ## Changes
-Switched to using JTable
+Deleting code that is hopefully unnecessary from ListPane
+Added launch.json to .vscode directory
 
 ## To do:
-Home screen
-Date | Name | ...
-
-Add check out/check in system
-Show on main screen
-
-
-Change to JTable
 Fix missing functions in Bike
 Generate report file
 Implement change log to allow users to undo changes

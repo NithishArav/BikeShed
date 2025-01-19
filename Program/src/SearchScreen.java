@@ -24,7 +24,7 @@ public class SearchScreen extends JPanel implements Screen
     
     JButton homeButton;
 
-    ActionListener paperListener;
+    // ActionListener paperListener;
 
     private String[] chosen = new String[7];
     private LinkedHashMap<String, String> searchItems = new LinkedHashMap<>();
@@ -62,7 +62,7 @@ public class SearchScreen extends JPanel implements Screen
         filterItems.put(DATE, new String[] {"no filter", "older than", "younger than"});
         filterItems.put(INT, new String[] {"no filter", "less than", "greater than"});
 
-        this.paperListener = paperListener;
+        // this.paperListener = paperListener;
 
         setLayout(new GridBagLayout());
 
