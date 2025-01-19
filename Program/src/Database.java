@@ -5,12 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.io.*;
 
-// import com.opencsv.CSVParser;
-// import com.opencsv.CSVParserBuilder;
-// import com.opencsv.CSVReader;
-// import com.opencsv.CSVReaderBuilder;
-// import com.opencsv.CSVWriter;
-
 /**
  * Loads, edits, and saves the database of Paper objects
  * Referenced in View.java
@@ -19,14 +13,14 @@ public class Database
 {
     private String dPath;
     private String path;
-    private ArrayList<Paper> db;
+    private ArrayList<Bike> db;
 
     /**
      * no-arg constructor, initializes empty database
      */
     public Database()
     {
-        db = new ArrayList<>();
+        db = new ArrayList<Bike>();
     }
 
     /**
@@ -45,26 +39,6 @@ public class Database
         load();
     }
 
-    // public void save()
-    // {
-    //     try
-    //     {
-    //         FileWriter outputFile = new FileWriter(new File(path), false);
-    //         CSVWriter writer = new CSVWriter(outputFile, ';', '"', '\\', "\n");
-    //         for (Paper p : db)
-    //         {
-    //             writer.writeNext(p.asArray());
-    //         }
-    //         writer.close();
-    //         outputFile.close();
-    //     }
-    //     catch (Exception e)
-    //     {
-    //         System.out.println("Could not save file: ");
-    //         e.printStackTrace();
-    //     }
-    //     backup();
-    // }
     public void save()
     {
         try (FileWriter writer = new FileWriter(new File(path), false)) 
@@ -76,6 +50,7 @@ public class Database
             System.out.println("Could not save file");
             System.out.println(Arrays.toString(e.getStackTrace()));
         }
+        backup();
     }
 
     private void backup()
@@ -85,26 +60,6 @@ public class Database
         // +d_,_:
     }
 
-    // public void load()
-    // {
-    //     try
-    //     {
-    //         File db_file = new File(path);
-    //         CSVParser parser = new CSVParserBuilder().withSeparator(';').build();
-    //         CSVReader reader = new CSVReaderBuilder(new FileReader(db_file)).withCSVParser(parser).build();
-    //         String[] nextLine;
-    //         while ((nextLine = reader.readNext()) != null)
-    //         {
-    //             db.add(new Paper(nextLine));
-    //         }
-    //         reader.close();
-    //     }
-    //     catch (Exception e)
-    //     {
-    //         System.out.print("Could not load database: ");
-    //         e.printStackTrace();
-    //     }
-    // }
     private void load()
     {
         try (BufferedReader reader = new BufferedReader( new FileReader(new File(path))))
@@ -112,17 +67,13 @@ public class Database
             String nextLine;
             while ((nextLine = reader.readLine()) != null)
             {
-                db.add(new Paper(nextLine));
+                db.add(new Bike(nextLine));
             }
         }
         catch (Exception e)
         {
             System.out.println("Could not load file");
             e.printStackTrace();
-            // for (StackTraceElement i : e.getStackTrace())
-            // {
-            //     System.out.println(i);
-            // }
         }
     }
 
@@ -131,30 +82,31 @@ public class Database
         return db.size();
     }
 
-    public ArrayList<Paper> getDb()
+    public ArrayList<Bike> getDb()
     {
         return db;
     }
 
-    public int indexOf(Paper value)
+    public int indexOf(Bike value)
     {
         return db.indexOf(value);
     }
 
-    public void add(Paper newPaper)
+    public void add(Bike newPaper)
     {
         db.add(newPaper);
     }
 
     public void add(String[] data)
     {
-        if (data.length == Paper.LENGTH)
+        if (data.length == Bike.LENGTH)
         {
             ArrayList<String> tempArray = new ArrayList<String>();
             tempArray.add(Integer.toString(size()));
             tempArray.addAll(Arrays.asList(data));
+
         }
-        db.add(new Paper(data));
+        db.add(new Bike(data));
         save();
     }
 
@@ -163,18 +115,18 @@ public class Database
     //     db.add(new Paper(loadString));
     // }
 
-    public void add(int index, Paper newPaper)
+    public void add(int index, Bike newPaper)
     {
         db.add(index, newPaper);
         save();
     }
 
-    public Paper get(int index)
+    public Bike get(int index)
     {
         return db.get(index);
     }
 
-    public void edit(int index, Paper newPaper)
+    public void edit(int index, Bike newPaper)
     {
         db.remove(index);
         db.add(index, newPaper);
@@ -184,11 +136,11 @@ public class Database
     public void edit(int index, String[] newPaper)
     {
         db.remove(index);
-        db.add(index, new Paper(newPaper));
+        db.add(index, new Bike(newPaper));
         save();
     }
 
-    public void edit(int index, String param, String value)
+    public void edit(int index, int param, String value)
     {
         db.get(index).set(param, value);
         save();
@@ -200,10 +152,10 @@ public class Database
         save();
     }
 
-    public Database search(String param, String value)
+    public Database search(int param, String value)
     {
         Database returnDb = new Database();
-        for (Paper p : db)
+        for (Bike p : db)
         {
             if (p.get(param).equals(value))
             {
@@ -213,7 +165,7 @@ public class Database
         return returnDb;
     }
 
-    public Database sort(String param, boolean increasing)
+    public Database sort(int param, boolean increasing)
     {
         // using insertion sort
         int index = 0;
@@ -221,7 +173,7 @@ public class Database
         Database returnDb = new Database();
         for (int i = 0; i < db.size(); i++)
         {
-            Paper p = db.get(i);
+            Bike p = db.get(i);
             for (int j = i-1; j >= 0; j--)
             {
                 compResult = p.compareParam(param, returnDb.db.get(j).get(param));
@@ -253,16 +205,16 @@ public class Database
         return returnDb;
     }
 
-    public Database sort(String param)
+    public Database sort(int param)
     {
         return sort(param, true);
     }
 
-    public Database filter(String param, String threshold, String comparator)
+    public Database filter(int param, String threshold, String comparator)
     {
         int result;
         Database returnDb = new Database();
-        for (Paper p : db)
+        for (Bike p : db)
         {
             result = p.compareParam(param, threshold);
             if (result < 0)
@@ -294,9 +246,9 @@ public class Database
     {
         String returnString = "";
 
-        for (String s : asArray())
+        for (Bike b : db)
         {
-            returnString += s;
+            returnString += b.toString();
         }
 
         return returnString;
@@ -314,7 +266,7 @@ public class Database
 
     public String[][] as2DArray()
     {
-        String[][] returnArray = new String[size()][Paper.NUM_PARAMS];
+        String[][] returnArray = new String[size()][Bike.NUM_PARAMS];
         for (int i = 0; i < size(); i++)
         {
             returnArray[i] = db.get(i).asArray();
@@ -326,12 +278,12 @@ public class Database
     public String toString()
     {
         String returnString = "";
-        for (Paper p : db)
+        for (Bike p : db)
         {
-            returnString += "\""+p.get(Paper.TITLE)+"\""
-                + ", by " + p.get(Paper.AUTHOR)
-                + " (" + p.get(Paper.DATE) 
-                + ") Rating: " + p.get(Paper.RATING)+ "\n";
+            returnString += p.get(Bike.MAKE)
+                + ", " + p.get(Bike.MODEL)
+                + ", " + p.get(Bike.COLOR) 
+                + ", " + p.get(Bike.SERIAL)+ "\n";
         }
         return returnString;
     }
@@ -339,12 +291,12 @@ public class Database
     public String toString(Database reference)
     {
         String returnString = "";
-        for (Paper p : db)
+        for (Bike p : db)
         {
-            returnString += "id: #" + reference.db.indexOf(p) + ", \""+p.get(Paper.TITLE)+"\""
-                + ", by " + p.get(Paper.AUTHOR)
-                + " (" + p.get(Paper.DATE) 
-                + ") Rating: " + p.get(Paper.RATING)+ "\n";
+            returnString += "id: #" + reference.db.indexOf(p) + ", "+p.get(Bike.MAKE)
+                + ", " + p.get(Bike.MODEL)
+                + ", " + p.get(Bike.COLOR)
+                + ", " + p.get(Bike.SERIAL)+ "\n";
         }
         return returnString;
     }

@@ -27,12 +27,12 @@ public class SearchScreen extends JPanel implements Screen
     ActionListener paperListener;
 
     private String[] chosen = new String[7];
-    private final LinkedHashMap<String, String> searchItems = new LinkedHashMap<>();
+    private LinkedHashMap<String, String> searchItems = new LinkedHashMap<String, String>();
 
-    private LinkedHashMap<String, String> comparableItems = new LinkedHashMap<>();
-    private LinkedHashMap<String, String[]> sortItems = new LinkedHashMap<>();
+    private LinkedHashMap<String, String> comparableItems = new LinkedHashMap<String, String>();
+    private LinkedHashMap<String, String[]> sortItems = new LinkedHashMap<String, String[]>();
 
-    private LinkedHashMap<String, String[]> filterItems = new LinkedHashMap<>();
+    private LinkedHashMap<String, String[]> filterItems = new LinkedHashMap<String, String[]>();
 
     final static String STR = "string";
     final static String DATE = "date";
@@ -43,12 +43,12 @@ public class SearchScreen extends JPanel implements Screen
     public SearchScreen(View view, ActionListener mainListener, ActionListener paperListener)
     {
         v = view;
-        searchItems.put("title", STR);
-        searchItems.put("author", STR);
-        searchItems.put("field", STR);
+        searchItems.put("make", STR);
+        searchItems.put("model", STR);
+        searchItems.put("color", STR);
         searchItems.put("date", DATE);
 
-        comparableItems.put("title", STR);
+        comparableItems.put("make", STR);
         comparableItems.put("author", STR);
         comparableItems.put("field", STR);
         comparableItems.put("date", DATE);
@@ -89,15 +89,15 @@ public class SearchScreen extends JPanel implements Screen
                 @SuppressWarnings("unchecked") 
                 JComboBox<String> cb = (JComboBox<String>)e.getSource();
                 String selectedItem = (String)cb.getSelectedItem();
-                sortInput.setModel(new DefaultComboBoxModel<>(sortItems.get(comparableItems.get(selectedItem))));
+                sortInput.setModel(new DefaultComboBoxModel<String>(sortItems.get(comparableItems.get(selectedItem))));
             }
         });
         add(sortParam, v.getConstraint(1, 3));
         add(sortInput, v.getConstraint(2, 3));
         
         add(new JLabel("Filter by:"), v.getConstraint(3, 2));
-        filterParam = new JComboBox<>(comparableItems.keySet().toArray(new String[comparableItems.size()]));
-        filterInput = new JComboBox<>(filterItems.get(STR));
+        filterParam = new JComboBox<String>(comparableItems.keySet().toArray(new String[comparableItems.size()]));
+        filterInput = new JComboBox<String>(filterItems.get(STR));
         filterValue = new JTextField(5);
 
         filterParam.addActionListener(new ActionListener() {
@@ -170,7 +170,6 @@ public class SearchScreen extends JPanel implements Screen
         dbPane = new ListPane(displayList, v);
     }
 
-    @Override
     public void reset()
     {
         dbPane.setViewportView(null);

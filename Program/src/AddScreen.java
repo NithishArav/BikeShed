@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+
 import javax.swing.*;
 
 
@@ -28,27 +29,26 @@ public class AddScreen extends JPanel implements Screen
     public AddScreen(View view, ActionListener mainListener)
     {
         questions = new String[] {
-            "What is the title of the paper?",
-            "Who is the author? Please use Last name,First Name format",
-            "What is the main area of the paper? \nIf there is a subfield, please separate each subfield using a comma",
-            "What date was it published? Please use YYYY-MM-DD form",
-            "What journal is the paper a part of?",
-            "On a scale of 1-10, how important is the paper to your research, 10 being the most important?",
-            "What is a citation for the paper?",
-            "Please write a summary for the paper",
-            "Please write about the limitations of the paper regarding your research",
-            "Please write about the importance of the paper (last question)"
+            "What is the make of the bicycle?",
+            "What is the model of the bicycle",
+            "What color is the bicycle?",
+            "What is the serial number of the bicycle?",
+            "What is the first name of the owner?",
+            "What is the key number of the bicycle?",
+            "What is the date the bicycle was acquired or last worked on?",
+            "Is the bicycle new? Please enter either true or false",
+            "What work has been done on the bicycle?"
         };
 
         v = view;
         setLayout(new GridBagLayout());
 
-        answers = new String[Paper.NUM_PARAMS];
+        answers = new String[Bike.NUM_PARAMS];
         qNum = 0;
 
         homeButton = new JButton("cancel");
         homeButton.addActionListener(mainListener);
-        add(homeButton, v.getConstraint(0, 0, 1, GridBagConstraints.BASELINE_LEADING));
+        add(homeButton, v.getConstraint(0, 0));
 
         questionPane = new JTextArea(3, 100);
         questionPane.setEditable(false);
@@ -69,7 +69,7 @@ public class AddScreen extends JPanel implements Screen
                     questionPane.setText(questions[qNum]);
                     answerPane.setText("");
                     answerPane.setCaretPosition(0);
-                    if (qNum+1 == 10)
+                    if (qNum+1 == 9)
                     {
                         nextButton.setEnabled(false);
                         submit.setEnabled(true);
@@ -130,20 +130,7 @@ public class AddScreen extends JPanel implements Screen
     {
         String input = answerPane.getText();
         input = input.trim();
-        if (qNum == 1)
-        {
-            if (input.split(",").length != 2)
-            {
-                JOptionPane.showMessageDialog(v.frame, "Invalid format for author\nPlease separate first and last name with a comma");
-                return false;
-            }
-            input = deleteCommaWhitespace(input);
-        }
-        else if (qNum == 2)
-        {
-            input = "[" + input + "]";
-        }
-        else if (qNum == 3)
+        if (qNum == 6)
         {
             try
             {
@@ -155,11 +142,12 @@ public class AddScreen extends JPanel implements Screen
                 return false;
             }
         }
-        else if (qNum == 5)
+        else if (qNum == 7)
         {
-            if (!(input.matches("[1-9]") || input.equals("10")))
+            input = input.toLowerCase();
+            if (!(input.equals("true") || input.equals("false")))
             {
-                JOptionPane.showMessageDialog(v.frame, "Invalid format for rating\nPlease use an integer between 1 and 10");
+                JOptionPane.showMessageDialog(v.frame, "Invalid boolean format, please type either true or false");
                 return false;
             }
         }

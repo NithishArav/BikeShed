@@ -23,7 +23,7 @@ public class MainScreen extends JPanel implements Screen
         setLayout(new GridBagLayout());
 
         this.paperListener = paperListener;
-        logo = new JLabel("My Research Paper Database");
+        logo = new JLabel("Bicycle Database");
 
         GridBagConstraints c;
         c = new GridBagConstraints() {
@@ -44,7 +44,7 @@ public class MainScreen extends JPanel implements Screen
             }};
         add(searchButton, c);
 
-        addButton = new JButton("Add New Paper");
+        addButton = new JButton("Register Bicycle");
         // searchButton.setActionCommand("add");
         addButton.addActionListener(addListener);
         c = new GridBagConstraints() {

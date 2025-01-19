@@ -17,7 +17,7 @@ public class View
     MainScreen mainScreen;
     SearchScreen searchScreen;
     AddScreen addScreen;
-    PaperScreen paperScreen;
+    BikeScreen paperScreen;
     LoadScreen loadScreen;
 
     final static String MAINPANEL = "Card with Main Panel";
@@ -48,7 +48,7 @@ public class View
         pane.add(mainScreen = new MainScreen(this, searchListener, addListener, paperListener), MAINPANEL);
         pane.add(searchScreen = new SearchScreen(this, mainListener, paperListener), SEARCHPANEL);
         pane.add(addScreen = new AddScreen(this, mainListener), ADDPANEL);
-        pane.add(paperScreen = new PaperScreen(this, mainListener), PAPERPANEL);
+        pane.add(paperScreen = new BikeScreen(this, mainListener), PAPERPANEL);
         pane.add(loadScreen = new LoadScreen(), LOADPANEL);
         
         cards = (CardLayout)(pane.getLayout());
@@ -84,24 +84,24 @@ public class View
     public String[][] getSearchResult(String[] searchParams)
     {
         Database returnDb;
-        returnDb = db.search(searchParams[1], searchParams[0]);
+        returnDb = db.search(Integer.parseInt(searchParams[1]), searchParams[0]);
 
         if (searchParams[3].equals("1"))
         {
-            returnDb = returnDb.sort(searchParams[2], true);
+            returnDb = returnDb.sort(Integer.parseInt(searchParams[2]), true);
         }
         else if (searchParams[3].equals("2"))
         {
-            returnDb = returnDb.sort(searchParams[2], false);
+            returnDb = returnDb.sort(Integer.parseInt(searchParams[2]), false);
         }
 
         if (searchParams[5].equals("1"))
         {
-            returnDb = returnDb.filter(searchParams[4], searchParams[6], "<");
+            returnDb = returnDb.filter(Integer.parseInt(searchParams[4]), searchParams[6], "<");
         }
         else if (searchParams[5].equals("2"))
         {
-            returnDb = returnDb.filter(searchParams[4], searchParams[6], ">");
+            returnDb = returnDb.filter(Integer.parseInt(searchParams[4]), searchParams[6], ">");
         }
 
         return returnDb.as2DArray();
@@ -189,10 +189,10 @@ public class View
 
     public void add(String[] newPaper)
     {
-        if (newPaper.length != Paper.NUM_PARAMS)
+        if (newPaper.length != Bike.NUM_PARAMS)
         {
             throw new IndexOutOfBoundsException("Length of new paper is " + newPaper.length
-                                                + "should be " + Paper.NUM_PARAMS);
+                                                + "should be " + Bike.NUM_PARAMS);
         }
         db.add(newPaper);
     }
@@ -204,10 +204,10 @@ public class View
 
     public void edit(String[] newPaper)
     {
-        if (newPaper.length != 11)
+        if (newPaper.length != Bike.LENGTH)
         {
             throw new IndexOutOfBoundsException("Edit paper has length " + newPaper.length 
-                                                + " should be 11");
+                                                + " should be " + Bike.LENGTH);
         }
         db.edit(Integer.valueOf(newPaper[0]), newPaper);
     }
@@ -238,26 +238,27 @@ public class View
             if (self == null)
             {
                 self = new GridBagConstraints();
+                self.weightx = 1.0;
+                self.weighty = 1.0;
             }
 
             self.gridx = gridx;
             self.gridy = gridy;
             self.gridwidth = gridwidth;
             self.anchor = anchor;
-            self.weightx = 1.0;
-            self.weighty = 1.0;
+
             return self;
         }
     }
         
     public GridBagConstraints getConstraint(int gridx, int gridy)
     {
-        return Constraint.get(gridx, gridy, 1, GridBagConstraints.NORTH);
+        return Constraint.get(gridx, gridy, 1, GridBagConstraints.CENTER);
     }
 
     public GridBagConstraints getConstraint(int gridx, int gridy, int gridwidth)
     {
-        return Constraint.get(gridx, gridy, gridwidth, GridBagConstraints.NORTH);
+        return Constraint.get(gridx, gridy, gridwidth, GridBagConstraints.CENTER);
     }
 
     public GridBagConstraints getConstraint(int gridx, int gridy, int gridwidth, int anchor)
