@@ -117,30 +117,26 @@ public class AddScreen extends JPanel implements Screen
     {
         String input = answerPane.getText();
         input = input.trim();
-        switch (qNum) {
-            case 6:
-                try
-                {
-                    LocalDate.parse(input);
-                }
-                catch (DateTimeParseException e)
-                {
-                    JOptionPane.showMessageDialog(v.frame, "Invalid date format\nPlease use YYYY-MM-DD");
-                    return false;
-                }   break;
-            case 7:
-                input = input.toLowerCase();
-                if (!(input.equals("true") || input.equals("false")))
-                {
-                    JOptionPane.showMessageDialog(v.frame, "Invalid boolean format, please type either true or false");
-                    return false;
-                }   break;
-            case 9:
-                qNum++;
-                answers[qNum] = "true";
-                break;
-            default:
-                break;
+        if (qNum == 6)
+        {
+            try
+            {
+                LocalDate.parse(input);
+            }
+            catch (DateTimeParseException e)
+            {
+                JOptionPane.showMessageDialog(v.frame, "Invalid date format\nPlease use YYYY-MM-DD");
+                return false;
+            }
+        }
+        else if (qNum == 7)
+        {
+            input = input.toLowerCase();
+            if (!(input.equals("true") || input.equals("false")))
+            {
+                JOptionPane.showMessageDialog(v.frame, "Invalid boolean format, please type either true or false");
+                return false;
+            }
         }
         answers[qNum+1] = input;
         return true;
