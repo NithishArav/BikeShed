@@ -64,7 +64,7 @@ public class AddScreen extends JPanel implements Screen
                 qNum++;
                 questionPane.setText(questions[qNum]);
                 answerPane.setText("");
-                answerPane.setCaretPosition(0);
+                answerPane.requestFocusInWindow();
                 if (qNum+1 == 9)
                 {
                     nextButton.setEnabled(false);
@@ -82,7 +82,7 @@ public class AddScreen extends JPanel implements Screen
                 qNum--;
                 questionPane.setText(questions[qNum]);
                 answerPane.setText("");
-                answerPane.setCaretPosition(0);
+                answerPane.requestFocusInWindow();
                 if (qNum-1 == 0)
                 {
                     backButton.setEnabled(false);
@@ -112,7 +112,7 @@ public class AddScreen extends JPanel implements Screen
         backButton.setEnabled(false);
         submit.setEnabled(false);
         answers[0] = Integer.toString(v.getSize());
-        answerPane.setCaretPosition(0);
+        EventQueue.invokeLater( () -> answerPane.requestFocusInWindow());
     }
 
     public boolean updateAnswers()

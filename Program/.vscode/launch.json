@@ -10,20 +10,6 @@
             "request": "launch",
             "mainClass": "Main",
             "projectName": "Program_6eafa6fe"
-        },
-        {
-            "type": "java",
-            "name": "Main",
-            "request": "launch",
-            "mainClass": "Main",
-            "projectName": "Programs v3.2_c91921f5"
-        },
-        {
-            "type": "java",
-            "name": "Main",
-            "request": "launch",
-            "mainClass": "Main",
-            "projectName": "Programs v3.2"
         }
     ]
 }

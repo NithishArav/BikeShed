@@ -33,14 +33,19 @@ public class MainScreen extends JPanel implements Screen
         c.weighty = 1.0;
         add(logo, c);
 
+        c.gridheight = 1;
+        c.fill = GridBagConstraints.BOTH;
+        c.gridx = 1;
+        c.gridy = 0;
         searchButton = new JButton("Search");
         searchButton.setActionCommand("search");
         searchButton.addActionListener(searchListener);
-        add(searchButton, v.getConstraint(1, 0));
+        add(searchButton, c);
 
+        c.gridy = 1;
         addButton = new JButton("Register Bicycle");
         addButton.addActionListener(addListener);
-        add(addButton, v.getConstraint(1, 1));
+        add(addButton, c);
     }
 
     public void setDatabase(String[][] db)

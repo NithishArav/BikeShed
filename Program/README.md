@@ -1,9 +1,8 @@
 ## Changes
-Added code to Bike class comparative methods
-Added AutoSort to JTable, removed sorting from SearchScreen
+Modified launch.json for new directory
+Made buttons fill grid
 
 ## To do:
-Fix missing functions in Bike
 Generate report file
 Implement change log to allow users to undo changes
 Add documentation

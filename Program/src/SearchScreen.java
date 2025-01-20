@@ -23,17 +23,16 @@ public class SearchScreen extends JPanel implements Screen
     JButton homeButton;
 
     // ActionListener paperListener;
+    final static String STR = "string";
+    final static String DATE = "date";
+    final static String INT = "int";
+    final static String BOOL = "bool";
 
     private String[] chosen = new String[7];
     private LinkedHashMap<String, String> searchItems = new LinkedHashMap<>();
 
     private LinkedHashMap<String, String> filterParams = new LinkedHashMap<>();
     private LinkedHashMap<String, String[]> filterItems = new LinkedHashMap<>();
-
-    final static String STR = "string";
-    final static String DATE = "date";
-    final static String INT = "int";
-    final static String BOOL = "bool";
 
     View v;
 
@@ -51,9 +50,9 @@ public class SearchScreen extends JPanel implements Screen
         filterParams.put("checked in", BOOL);
 
         filterItems.put(STR, new String[] {"no filter", "lexographically before", "lexographically after"});
-        filterItems.put(DATE, new String[] {"no filter", "older than", "younger than"});
+        filterItems.put(DATE, new String[] {"no filter", "older than", "newer than"});
         filterItems.put(INT, new String[] {"no filter", "less than", "greater than"});
-        filterItems.put(BOOL, new String[] {"is", "is not"});
+        filterItems.put(BOOL, new String[] {"no filter", "is", "is not"});
 
         // this.paperListener = paperListener;
 
@@ -108,7 +107,7 @@ public class SearchScreen extends JPanel implements Screen
             }
             chosen[1] = Integer.toString(Bike.STRING2PARAM((String)searchParam.getSelectedItem()));
             chosen[2] = Integer.toString(Bike.STRING2PARAM((String)filterParam.getSelectedItem()));
-            chosen[3] = Integer.toString(filterInput.getSelectedIndex());
+            chosen[3] = (String)filterInput.getSelectedItem();
             chosen[4] = filterValue.getText();
             
             String[][] searchResult = v.getSearchResult(chosen);

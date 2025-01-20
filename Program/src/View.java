@@ -84,19 +84,37 @@ public class View
     public String[][] getSearchResult(String[] searchParams)
     {
         Database returnDb;
-        System.out.println(searchParams[0]);
         if (searchParams[0].equals("SEARCH%ALL"))
             returnDb = db;
         else
             returnDb = db.search(Integer.parseInt(searchParams[1]), searchParams[0]);
 
-        if (searchParams[3].equals("1"))
+        // if (searchParams[3].equals("1"))
+        // {
+        //     returnDb = returnDb.filter(Integer.parseInt(searchParams[2]), searchParams[4], "<");
+        // }
+        // else if (searchParams[3].equals("2"))
+        // {
+        //     returnDb = returnDb.filter(Integer.parseInt(searchParams[2]), searchParams[4], ">");
+        // }
+        if (!(searchParams[3].equals("no filter")))
         {
-            returnDb = returnDb.filter(Integer.parseInt(searchParams[2]), searchParams[4], "<");
-        }
-        else if (searchParams[3].equals("2"))
-        {
-            returnDb = returnDb.filter(Integer.parseInt(searchParams[2]), searchParams[4], ">");
+            switch (searchParams[3])
+            {
+                case "lexographically before", "older than" -> {returnDb = returnDb.filter(
+                    Integer.parseInt(searchParams[2]), searchParams[4], "<"
+                );}
+                case "lexographically after", "new than" -> {returnDb = returnDb.filter(
+                    Integer.parseInt(searchParams[2]), searchParams[4], ">"
+                );}
+                case "is" -> {returnDb = returnDb.search(
+                    Integer.parseInt(searchParams[2]), "true"
+                );}
+                case "is not" -> {returnDb = returnDb.search(
+                    Integer.parseInt(searchParams[2]), "false"
+                );}
+                default -> {}
+            }
         }
 
         return returnDb.as2DArray();
