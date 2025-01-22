@@ -6,19 +6,13 @@ import javax.swing.*;
 
 public class AnswerPane extends JPanel
 {
-    private interface answerComponent
-    {
-        public String getText();
-    }
-    public static final String JTEXTFIELD = "JTextField";
-    public static final String JTEXTAREA = "JTextArea";
+    public static final String TEXTFIELD = "JTextField";
+    public static final String TEXTAREA = "JTextArea";
     public static final String DATEPICKER = "Date Picker";
 
-    // private JTextField textField;
-    // private JTextArea textArea;
-    // private DatePicker datePicker;
-
-    private HashMap<String, answerComponent> entries = new HashMap<>();
+    private JTextField textField;
+    private JTextArea textArea;
+    private DatePicker datePicker;
 
     private CardLayout cards;
 
@@ -28,21 +22,25 @@ public class AnswerPane extends JPanel
     {
         cards = new CardLayout();
         setLayout(cards);
-        AnswerField textField = new AnswerField();
-        add(textField);
-        entries.put(JTEXTFIELD, textField);
 
-        AnswerArea textArea = new AnswerArea();
-        add(textArea);
-        entries.put(JTEXTAREA, textArea);
+        textField = new JTextField();
+        add(textField, TEXTFIELD);
 
-        DatePicker datePicker = new DatePicker();
+        textArea = new JTextArea();
+        textArea.setEditable(true);
+        add(textArea, TEXTAREA);
+
+        datePicker = new DatePicker();
         add(datePicker, DATEPICKER);
-        entries.put(DATEPICKER, datePicker);
 
         this.type = type;
         switchType(type);
     }
+
+    // public AnswerPane(int rows, int columns)
+    // {
+    //     textArea = new JTextArea(rows, columns);
+    // }
 
     public final void switchType(String type)
     {
@@ -50,23 +48,34 @@ public class AnswerPane extends JPanel
         cards.show(this, type);
     }
 
-    private class AnswerField extends JTextField implements answerComponent {}
-
-    private class AnswerArea extends JTextField implements answerComponent {}
-
-    // private JTextField createJTextField()
+    // private class AnswerField extends JTextField implements answerComponent
     // {
-    //     JTextField textField = new JTextField();
-    //     return textField;
+    //     @Override
+    //     public String getText()
+    //     {
+    //         return super.getText();
+    //     }
+
+    //     @Override
+    //     public void setText(String t) {
+    //         super.setText(t);
+    //     }
     // }
 
-    // private JTextArea createJTextArea()
+    // private class AnswerArea extends JTextArea implements answerComponent
     // {
-    //     JTextArea textArea = new JTextArea();
-    //     return textArea;
+    //     public AnswerArea()
+    //     {
+
+    //     }
+
+    //     public AnswerArea(int rows, int columns)
+    //     {
+    //         super(rows, columns);
+    //     }
     // }
 
-    private class DatePicker extends JPanel implements answerComponent
+    private class DatePicker extends JPanel
     {
         JTextField year;
 
@@ -136,7 +145,6 @@ public class AnswerPane extends JPanel
             add(year);
         }
 
-        @Override
         public String getText()
         {
             String date;
@@ -156,14 +164,58 @@ public class AnswerPane extends JPanel
             return date;
         }
 
+        public void setText(String t) {
+            year.setText(t.substring(0, 4));
+            month.setSelectedIndex(Integer.parseInt(t.substring(5, 7)));
+            day.setSelectedIndex(Integer.parseInt(t.substring(8, 10)));
+        }
+
         private static boolean isLeapYear(int y)
         {
             return ((y%400) == 0 || ((y%4) == 0) && ((y%100) == 0));
         }
     }
 
+    public Object get()
+    {
+        return switch (type)
+        {
+            case TEXTFIELD -> textField;
+            case TEXTAREA -> textArea;
+            case DATEPICKER -> datePicker;
+            default -> null;
+        };
+    }
+
     public String getText()
     {
-        return entries.get(type).getText();
+        return switch (type)
+        {
+            case TEXTFIELD -> textField.getText();
+            case TEXTAREA -> textArea.getText();
+            case DATEPICKER -> datePicker.getText();
+            default -> null;
+        };
+    }
+
+    public void setText(String t)
+    {
+        switch (type)
+        {
+            case TEXTFIELD -> textField.setText(t);
+            case TEXTAREA -> textArea.setText(t);
+            case DATEPICKER -> datePicker.setText(t);
+            default -> {}
+        };
+    }
+
+    @Override
+    public boolean requestFocusInWindow()
+    {
+        return switch (type)
+        {
+            case TEXTAREA -> textArea.requestFocusInWindow();
+            default -> false;
+        };
     }
 }

@@ -1,6 +1,5 @@
 ## Changes
-Modified launch.json for new directory
-Made buttons fill grid
+Changed AnswerPane from using HashMap to multiple compositions
 
 ## To do:
 Generate report file

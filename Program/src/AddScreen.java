@@ -13,7 +13,7 @@ public class AddScreen extends JPanel implements Screen
 {
     JButton homeButton;
     JTextArea questionPane;
-    JTextArea answerPane;
+    AnswerPane answerPane;
     JButton nextButton;
     JButton backButton;
     JButton submit;
@@ -53,8 +53,9 @@ public class AddScreen extends JPanel implements Screen
         questionPane.setEditable(false);
         add(questionPane, v.getConstraint(0, 1, 2));
 
-        answerPane = new JTextArea(3, 100);
-        answerPane.setEditable(true);
+        answerPane = new AnswerPane(AnswerPane.TEXTAREA);
+        ((JTextArea)(answerPane.get())).setRows(3);
+        ((JTextArea)(answerPane.get())).setColumns(100);
         add(answerPane, v.getConstraint(0, 2, 2));
 
         nextButton = new JButton("next");
@@ -120,10 +121,8 @@ public class AddScreen extends JPanel implements Screen
         String input = answerPane.getText();
         input = input.trim();
         switch (qNum) {
-            case 2:
-                input = input.toLowerCase();
-                break;
-            case 6:
+            case 2 -> input = input.toLowerCase();
+            case 6 -> {
                 try
                 {
                     LocalDate.parse(input);
@@ -132,20 +131,22 @@ public class AddScreen extends JPanel implements Screen
                 {
                     JOptionPane.showMessageDialog(v.frame, "Invalid date format\nPlease use YYYY-MM-DD");
                     return false;
-                }   break;
-            case 7:
+                }
+            }
+            case 7 -> {
                 input = input.toLowerCase();
                 if (!(input.equals("true") || input.equals("false")))
                 {
                     JOptionPane.showMessageDialog(v.frame, "Invalid boolean format, please type either true or false");
                     return false;
-                }   break;
-            case 9:
+                }
+            }
+            case 9 -> {
                 qNum++;
                 answers[qNum] = "true";
-                break;
-            default:
-                break;
+            }
+            default -> {
+            }
         }
         answers[qNum+1] = input;
         return true;
