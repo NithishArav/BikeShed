@@ -1,5 +1,6 @@
 ## Changes
-Changed AnswerPane from using HashMap to multiple compositions
+Java updated to JDK 23
+Added BoolPicker to AnswerPane
 
 ## To do:
 Generate report file

@@ -1,7 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
+import java.util.Arrays;
+
 import javax.swing.*;
 
 
@@ -35,14 +35,13 @@ public class AddScreen extends JPanel implements Screen
             "What is the first name of the owner?",
             "What is the key number of the bicycle?",
             "What is the date the bicycle was acquired or last worked on?",
-            "Is the bicycle new? Please enter either true or false",
             "What work has been done on the bicycle?"
         };
 
         v = view;
         setLayout(new GridBagLayout());
 
-        answers = new String[Bike.NUM_PARAMS];
+        answers = new String[Bike.NUM_PARAMS-2];
         qNum = 0;
 
         homeButton = new JButton("cancel");
@@ -63,10 +62,14 @@ public class AddScreen extends JPanel implements Screen
             if (updateAnswers())
             {
                 qNum++;
+                if (qNum==6)
+                {
+                    answerPane.switchType(AnswerPane.DATEPICKER);
+                }
                 questionPane.setText(questions[qNum]);
                 answerPane.setText("");
                 answerPane.requestFocusInWindow();
-                if (qNum+1 == 9)
+                if (qNum+1 == Bike.NUM_PARAMS-3)
                 {
                     nextButton.setEnabled(false);
                     submit.setEnabled(true);
@@ -88,6 +91,10 @@ public class AddScreen extends JPanel implements Screen
                 {
                     backButton.setEnabled(false);
                 }
+                if (qNum==6)
+                {
+                    answerPane.switchType(AnswerPane.DATEPICKER);
+                }
             }
             nextButton.setEnabled(true);
             submit.setEnabled(false);
@@ -98,7 +105,17 @@ public class AddScreen extends JPanel implements Screen
         submit.setEnabled(false);
         submit.addActionListener((ActionEvent e) -> {
             answers[qNum+1] = answerPane.getText();
-            v.add(answers);
+            int n =  Bike.NUM_PARAMS;
+            String[] newBike = new String[n];
+            for (int i = 0; i < Bike.NUM_PARAMS - 3; i++)
+            {
+                newBike[i] = answers[i];
+            }
+            newBike[n-3] = Boolean.toString(true);
+            newBike[n-2] = Boolean.toString(true);
+            newBike[n-1] = answers[n-3];
+            System.out.println(Arrays.toString(newBike));
+            v.add(newBike);
             mainListener.actionPerformed(e);
         });
         add(submit, v.getConstraint(0, 4));
@@ -122,29 +139,29 @@ public class AddScreen extends JPanel implements Screen
         input = input.trim();
         switch (qNum) {
             case 2 -> input = input.toLowerCase();
+            case 3, 5 -> {
+                if (!(input.matches("\\d+")))
+                {
+                    System.out.println(input);
+                    JOptionPane.showMessageDialog(v.frame, "Invalid number format, please use only digits");
+                    return false;
+                }
+            }
             case 6 -> {
-                try
-                {
-                    LocalDate.parse(input);
-                }
-                catch (DateTimeParseException e)
-                {
-                    JOptionPane.showMessageDialog(v.frame, "Invalid date format\nPlease use YYYY-MM-DD");
-                    return false;
-                }
+                answerPane.switchType(AnswerPane.TEXTAREA);
             }
-            case 7 -> {
-                input = input.toLowerCase();
-                if (!(input.equals("true") || input.equals("false")))
-                {
-                    JOptionPane.showMessageDialog(v.frame, "Invalid boolean format, please type either true or false");
-                    return false;
-                }
-            }
-            case 9 -> {
-                qNum++;
-                answers[qNum] = "true";
-            }
+            // case 7 -> {
+            //     input = input.toLowerCase();
+            //     if (!(input.equals("true") || input.equals("false")))
+            //     {
+            //         JOptionPane.showMessageDialog(v.frame, "Invalid boolean format, please type either true or false");
+            //         return false;
+            //     }
+            // }
+            // case 9 -> {
+            //     qNum++;
+            //     answers[qNum] = "true";
+            // }
             default -> {
             }
         }

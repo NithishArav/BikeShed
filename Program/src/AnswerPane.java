@@ -1,5 +1,6 @@
 import java.awt.CardLayout;
 import java.awt.event.*;
+import java.time.LocalDate;
 import java.util.HashMap;
 import javax.swing.*;
 
@@ -9,10 +10,12 @@ public class AnswerPane extends JPanel
     public static final String TEXTFIELD = "JTextField";
     public static final String TEXTAREA = "JTextArea";
     public static final String DATEPICKER = "Date Picker";
+    public static final String BOOLPICKER = "Bool Picker";
 
     private JTextField textField;
     private JTextArea textArea;
     private DatePicker datePicker;
+    private BoolPicker boolPicker;
 
     private CardLayout cards;
 
@@ -32,6 +35,9 @@ public class AnswerPane extends JPanel
 
         datePicker = new DatePicker();
         add(datePicker, DATEPICKER);
+
+        boolPicker = new BoolPicker();
+        add(boolPicker, BOOLPICKER);
 
         this.type = type;
         switchType(type);
@@ -151,28 +157,63 @@ public class AnswerPane extends JPanel
             date = year.getText();
             date = "0".repeat(4 - date.length()) + date + "-";
 
-            int d = (int)day.getSelectedItem();
-            if (d < 10)
-                {date = date + "0";}
-            date = date + Integer.toString(d) + "-";
-            
             int m = month.getSelectedIndex();
             if (m < 10)
                 {date = date + "0";}
-            date = date + Integer.toString(m);
+            date = date + Integer.toString(m) + "-";
+
+            int d = (int)day.getSelectedItem();
+            if (d < 10)
+                {date = date + "0";}
+            date = date + Integer.toString(d);
 
             return date;
         }
 
         public void setText(String t) {
+            if (t.length() != 10)
+            {
+                t = LocalDate.now().toString();
+            }
             year.setText(t.substring(0, 4));
             month.setSelectedIndex(Integer.parseInt(t.substring(5, 7)));
-            day.setSelectedIndex(Integer.parseInt(t.substring(8, 10)));
+            day.setSelectedItem(Integer.parseInt(t.substring(8, 10)));
         }
 
         private static boolean isLeapYear(int y)
         {
             return ((y%400) == 0 || ((y%4) == 0) && ((y%100) == 0));
+        }
+    }
+
+    private class BoolPicker extends JComboBox<String>
+    {
+        private static final String[] options = new String[] {"yes", "no"};
+        
+        public BoolPicker()
+        {
+            super(options);
+        }
+
+        public String getText()
+        {
+            if (getSelectedIndex()==0)
+            {
+                return Boolean.toString(true);
+            }
+            return Boolean.toString(false);
+        }
+
+        public void setText(String t)
+        {
+            if (t.equals("no") || t.equals("false"))
+            {
+                setSelectedIndex(1);
+            }
+            else
+            {
+                setSelectedIndex(0);
+            }
         }
     }
 
@@ -183,6 +224,7 @@ public class AnswerPane extends JPanel
             case TEXTFIELD -> textField;
             case TEXTAREA -> textArea;
             case DATEPICKER -> datePicker;
+            case BOOLPICKER -> boolPicker;
             default -> null;
         };
     }
@@ -194,6 +236,7 @@ public class AnswerPane extends JPanel
             case TEXTFIELD -> textField.getText();
             case TEXTAREA -> textArea.getText();
             case DATEPICKER -> datePicker.getText();
+            case BOOLPICKER -> boolPicker.getText();
             default -> null;
         };
     }
@@ -205,6 +248,7 @@ public class AnswerPane extends JPanel
             case TEXTFIELD -> textField.setText(t);
             case TEXTAREA -> textArea.setText(t);
             case DATEPICKER -> datePicker.setText(t);
+            case BOOLPICKER -> boolPicker.setText(t);
             default -> {}
         };
     }
@@ -217,5 +261,10 @@ public class AnswerPane extends JPanel
             case TEXTAREA -> textArea.requestFocusInWindow();
             default -> false;
         };
+    }
+
+    public String getType()
+    {
+        return type;
     }
 }
