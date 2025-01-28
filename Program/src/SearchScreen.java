@@ -96,7 +96,7 @@ public class SearchScreen extends JPanel implements Screen
         JLabel noResult = new JLabel("No results found");
 
         searchButton = new JButton("Search");
-        searchButton.addActionListener((ActionEvent e) -> {
+        searchButton.addActionListener((@SuppressWarnings("unused") ActionEvent e) -> {
             if (searchParam.getSelectedIndex() == 0)
             {
                 chosen[0] = "SEARCH%ALL";

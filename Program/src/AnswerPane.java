@@ -1,6 +1,7 @@
 import java.awt.CardLayout;
 import java.awt.event.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import javax.swing.*;
 
@@ -118,7 +119,7 @@ public class AnswerPane extends JPanel
             }
             month = new JComboBox<>(monthNames);
             day = new JComboBox<>(dayNames.get(31));
-            month.addActionListener((ActionEvent e) -> 
+            month.addActionListener((@SuppressWarnings("unused") ActionEvent e) -> 
             {   
                 String selectedItem = (String)month.getSelectedItem();
                 if (selectedItem.equals("February"))
@@ -151,10 +152,14 @@ public class AnswerPane extends JPanel
             add(year);
         }
 
-        public String getText()
+        public String getText() throws DateTimeParseException
         {
             String date;
-            date = year.getText();
+            String y = year.getText();
+            if ((y.length() > 4) || (!(y.matches("\\d+"))))  {
+                throw new DateTimeParseException("Year is not correct format", y, 0);
+            }
+            date = y;
             date = "0".repeat(4 - date.length()) + date + "-";
 
             int m = month.getSelectedIndex();

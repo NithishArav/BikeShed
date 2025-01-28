@@ -1,6 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
+import java.time.format.DateTimeParseException;
 
 import javax.swing.*;
 
@@ -45,10 +45,13 @@ public class AddScreen extends JPanel implements Screen
         qNum = 0;
 
         homeButton = new JButton("cancel");
+        homeButton.setFont(new Font("Georgia", Font.PLAIN, 16));
         homeButton.addActionListener(mainListener);
-        add(homeButton, v.getConstraint(0, 0));
+        add(homeButton, v.getConstraint(0, 0, 1, GridBagConstraints.NORTHWEST));
 
         questionPane = new JTextArea(3, 100);
+        questionPane.setFont(new Font("Georgia", Font.PLAIN, 24));
+        questionPane.setColumns(50);
         questionPane.setEditable(false);
         add(questionPane, v.getConstraint(0, 1, 2));
 
@@ -58,7 +61,7 @@ public class AddScreen extends JPanel implements Screen
         add(answerPane, v.getConstraint(0, 2, 2));
 
         nextButton = new JButton("next");
-        nextButton.addActionListener((ActionEvent e) -> {
+        nextButton.addActionListener((@SuppressWarnings("unused") ActionEvent e) -> {
             if (updateAnswers())
             {
                 qNum++;
@@ -80,7 +83,7 @@ public class AddScreen extends JPanel implements Screen
         add(nextButton, v.getConstraint(1, 3));
 
         backButton = new JButton("back");
-        backButton.addActionListener((ActionEvent e) -> {
+        backButton.addActionListener((@SuppressWarnings("unused") ActionEvent e) -> {
             if (updateAnswers())
             {
                 qNum--;
@@ -114,11 +117,10 @@ public class AddScreen extends JPanel implements Screen
             newBike[n-3] = Boolean.toString(true);
             newBike[n-2] = Boolean.toString(true);
             newBike[n-1] = answers[n-3];
-            System.out.println(Arrays.toString(newBike));
             v.add(newBike);
             mainListener.actionPerformed(e);
         });
-        add(submit, v.getConstraint(0, 4));
+        add(submit, v.getConstraint(1, 4));
     }
 
     public void active()
@@ -135,6 +137,14 @@ public class AddScreen extends JPanel implements Screen
 
     public boolean updateAnswers()
     {
+        if (qNum == 6)
+        {
+            try {
+                answerPane.getText();
+            } catch (DateTimeParseException e) {
+                JOptionPane.showMessageDialog(v.frame, "Year must be valid 4 digit number");
+            }
+        }
         String input = answerPane.getText();
         input = input.trim();
         switch (qNum) {
@@ -142,7 +152,6 @@ public class AddScreen extends JPanel implements Screen
             case 3, 5 -> {
                 if (!(input.matches("\\d+")))
                 {
-                    System.out.println(input);
                     JOptionPane.showMessageDialog(v.frame, "Invalid number format, please use only digits");
                     return false;
                 }
@@ -150,20 +159,7 @@ public class AddScreen extends JPanel implements Screen
             case 6 -> {
                 answerPane.switchType(AnswerPane.TEXTAREA);
             }
-            // case 7 -> {
-            //     input = input.toLowerCase();
-            //     if (!(input.equals("true") || input.equals("false")))
-            //     {
-            //         JOptionPane.showMessageDialog(v.frame, "Invalid boolean format, please type either true or false");
-            //         return false;
-            //     }
-            // }
-            // case 9 -> {
-            //     qNum++;
-            //     answers[qNum] = "true";
-            // }
-            default -> {
-            }
+            default -> {}
         }
         answers[qNum+1] = input;
         return true;

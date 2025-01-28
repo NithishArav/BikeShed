@@ -24,7 +24,7 @@ public class MainScreen extends JPanel implements Screen
 
         // this.paperListener = paperListener;
         logo = new JLabel("Bicycle Database");
-        logo.setFont(new Font("Georgia", Font.PLAIN, 36));
+        logo.setFont(new Font("Georgia", Font.PLAIN, 48));
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
@@ -38,12 +38,14 @@ public class MainScreen extends JPanel implements Screen
         c.gridx = 1;
         c.gridy = 0;
         searchButton = new JButton("Search");
+        searchButton.setFont(new Font("Georgia", Font.PLAIN, 24));
         searchButton.setActionCommand("search");
         searchButton.addActionListener(searchListener);
         add(searchButton, c);
 
         c.gridy = 1;
         addButton = new JButton("Register Bicycle");
+        addButton.setFont(new Font("Georgia", Font.PLAIN, 24));
         addButton.addActionListener(addListener);
         add(addButton, c);
     }

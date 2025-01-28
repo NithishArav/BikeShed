@@ -115,7 +115,7 @@ public class BikeScreen extends JPanel implements Screen
         buttonPane = new JPanel(buttonCards);
 
         edit = new JButton("edit");
-        edit.addActionListener((ActionEvent e) -> {
+        edit.addActionListener((@SuppressWarnings("unused") ActionEvent e) -> {
             buttonCards.show(buttonPane, "save");
             
             for (JTextComponent t : new JTextComponent[] {
@@ -129,7 +129,7 @@ public class BikeScreen extends JPanel implements Screen
         });
 
         save = new JButton("save edits");
-        save.addActionListener((ActionEvent e) -> {
+        save.addActionListener((@SuppressWarnings("unused") ActionEvent e) -> {
             save(buttonCards);
         });
 
@@ -146,7 +146,7 @@ public class BikeScreen extends JPanel implements Screen
         });
         add(delete, v.getConstraint(4, 1));
 
-        checkIn.addActionListener((ActionEvent e) -> {
+        checkIn.addActionListener((@SuppressWarnings("unused") ActionEvent e) -> {
             if (checkIn.getText().equals(CHECKEDIN))
             {
                 checkIn.setText(CHECKEDOUT);

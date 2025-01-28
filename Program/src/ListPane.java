@@ -1,20 +1,19 @@
 import java.awt.Component;
+import java.awt.Font;
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 
 /**
  * Component class for showing database
  */
-public class ListPane extends JScrollPane
-{
+public class ListPane extends JScrollPane {
     String[][] list;
     View v;
     // private static final int NUM_PARAMS = Bike.LENGTH;
     final static String[] header = new String[] {
         "Date", "Name", "Make", "Model", "Color", "Checked In", " "
     };
-    public ListPane()
-    {
+    public ListPane() {
         super(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     }
 
@@ -59,6 +58,8 @@ public class ListPane extends JScrollPane
         table.getColumn(" ").setCellEditor(new ButtonEditor());
         table.getColumn(" ").setMaxWidth(40);
         table.setAutoCreateRowSorter(true);
+        table.setFont(new Font("Georgia", Font.PLAIN, 16));
+        table.setRowHeight(table.getRowHeight() + 4);
         return table;
     }
 }

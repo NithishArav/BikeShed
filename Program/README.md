@@ -1,6 +1,9 @@
 ## Changes
-Java updated to JDK 23
-Added BoolPicker to AnswerPane
+JFrame now fullscreens properly
+Position submit button on AddScreen underneath next button
+Allow for path to database to be read from command line
+Added @SuppressWarnings("unused") for ActionListeners
+Added fonts to increase text size
 
 ## To do:
 Generate report file

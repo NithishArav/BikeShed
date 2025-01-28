@@ -58,15 +58,15 @@ public class View
     
     public void start()
     {
-        frame = new JFrame("My Research Paper Database");
+        frame = new JFrame("Bike Shed Database");
+        frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.add(pane);
 
         frame.pack();
-        frame.setVisible(true);
 
         setDatabase();
+        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
     }
 
     private void setDatabase()
@@ -104,7 +104,7 @@ public class View
                 case "lexographically before", "older than" -> {returnDb = returnDb.filter(
                     Integer.parseInt(searchParams[2]), searchParams[4], "<"
                 );}
-                case "lexographically after", "new than" -> {returnDb = returnDb.filter(
+                case "lexographically after", "newer than" -> {returnDb = returnDb.filter(
                     Integer.parseInt(searchParams[2]), searchParams[4], ">"
                 );}
                 case "is" -> {returnDb = returnDb.search(

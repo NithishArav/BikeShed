@@ -8,10 +8,16 @@
  */
 public class Main
 {
-    public static final String PATH = "src/data/bike_database.csv";
+    // private static String path = "src/data/bike_database.csv";
+    // private static View v;
     public static void main(String[] args)
     {
-        View v = new View(PATH);
+        String path = "src/data/bike_database.csv";
+        if (args.length != 0)
+        {
+            path = args[0];
+        }
+        View v = new View(path);
         javax.swing.SwingUtilities.invokeLater(() -> {
             v.start();
         });
