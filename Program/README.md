@@ -1,9 +1,5 @@
 ## Changes
-JFrame now fullscreens properly
-Position submit button on AddScreen underneath next button
-Allow for path to database to be read from command line
-Added @SuppressWarnings("unused") for ActionListeners
-Added fonts to increase text size
+Change serial and key to stringss
 
 ## To do:
 Generate report file

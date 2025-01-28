@@ -4,6 +4,8 @@
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.*;
 
 /**
  * 
@@ -14,9 +16,9 @@ public class Bike
     private String make;
     private String model;
     private String color;
-    private int serial;
+    private String serial;
     private String name;
-    private int key;
+    private String key;
     private LocalDate date_;
     private boolean new_;
     private boolean checkedIn;
@@ -66,6 +68,26 @@ public class Bike
             add(WORKDONE);
         }
     };
+
+    // public static final int STRING = 0;
+    // public static final int INTEGER = 1;
+    // public static final int BOOLEAN = 2;
+    // public static final int LOCALDATE = 3;
+
+    // public Map<Integer, Integer> types = Stream.of(new Object[][] {
+    //     {ID, INTEGER},
+    //     {MAKE, STRING},
+    //     {MODEL, STRING},
+    //     {COLOR, STRING},
+    //     {SERIAL, STRING},
+    //     {NAME, STRING},
+    //     {KEY, STRING},
+    //     {DATE, LOCALDATE},
+    //     {NEW, BOOLEAN},
+    //     {CHECKEDIN, BOOLEAN},
+    //     {WORKDONE, STRING},
+    // }).collect(Collectors.toMap(data -> (Integer)data[0], data -> (Integer)data[1]));
+
 
     public static final int NUM_PARAMS = ALL_PARAMS.size();
 
@@ -148,9 +170,9 @@ public class Bike
         make = data[1];
         model = data[2];
         color = data[3];
-        serial = Integer.parseInt(data[4]);
+        serial = data[4];
         name = data[5];
-        key = Integer.parseInt(data[6]);
+        key = data[6];
         date_ = LocalDate.parse(data[7]);
         new_ = Boolean.parseBoolean(data[8]);
         checkedIn = Boolean.parseBoolean(data[9]);
@@ -177,9 +199,9 @@ public class Bike
             make,
             model,
             color,
-            Integer.toString(serial),
+            serial,
             name,
-            Integer.toString(key),
+            key,
             date_.toString(),
             Boolean.toString(new_),
             Boolean.toString(checkedIn),
@@ -216,9 +238,9 @@ public class Bike
             case MAKE -> make;
             case MODEL -> model;
             case COLOR -> color;
-            case SERIAL -> Integer.toString(serial);
+            case SERIAL -> serial;
             case NAME -> name;
-            case KEY -> Integer.toString(key);
+            case KEY -> key;
             case DATE -> date_.toString();
             case NEW -> Boolean.toString(new_);
             case CHECKEDIN -> Boolean.toString(checkedIn);
@@ -248,13 +270,13 @@ public class Bike
                 color = val;
                 break;
             case SERIAL:
-                serial = Integer.parseInt(val);
+                serial = val;
                 break;
             case NAME:
                 name = val;
                 break;
             case KEY:
-                key = Integer.parseInt(val);
+                key = val;
                 break;
             case DATE:
                 date_ = LocalDate.parse(val);
@@ -289,11 +311,9 @@ public class Bike
             case MAKE -> compVar = make;
             case MODEL -> compVar = model;
             case COLOR -> compVar = color;
-            case SERIAL -> {return serial == Integer.parseInt(other);}
+            case SERIAL -> compVar = serial;
             case NAME -> compVar = name;
-            case KEY -> {
-                return key == Integer.parseInt(other);
-            }
+            case KEY -> compVar = key;
             case DATE -> {
                 return date_.equals(LocalDate.parse(other));
             }

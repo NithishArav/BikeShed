@@ -65,13 +65,13 @@ public class AddScreen extends JPanel implements Screen
             if (updateAnswers())
             {
                 qNum++;
-                if (qNum==6)
-                {
+                if (qNum==6) {
                     answerPane.switchType(AnswerPane.DATEPICKER);
                 }
                 questionPane.setText(questions[qNum]);
                 answerPane.setText("");
                 answerPane.requestFocusInWindow();
+
                 if (qNum+1 == Bike.NUM_PARAMS-3)
                 {
                     nextButton.setEnabled(false);
@@ -149,13 +149,13 @@ public class AddScreen extends JPanel implements Screen
         input = input.trim();
         switch (qNum) {
             case 2 -> input = input.toLowerCase();
-            case 3, 5 -> {
-                if (!(input.matches("\\d+")))
-                {
-                    JOptionPane.showMessageDialog(v.frame, "Invalid number format, please use only digits");
-                    return false;
-                }
-            }
+            // case 3, 5 -> {
+            //     if (!(input.matches("\\d+")))
+            //     {
+            //         JOptionPane.showMessageDialog(v.frame, "Invalid number format, please use only digits");
+            //         return false;
+            //     }
+            // }
             case 6 -> {
                 answerPane.switchType(AnswerPane.TEXTAREA);
             }
