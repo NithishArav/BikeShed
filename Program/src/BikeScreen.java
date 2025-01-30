@@ -29,8 +29,8 @@ public class BikeScreen extends JPanel implements Screen
     JTextField serial;
     JTextField name;
     JTextField key;
-    JTextField date_;
-    JTextField new_;
+    AnswerPane date_;
+    AnswerPane new_;
     JButton checkIn;
     JTextArea workDone;
 
@@ -41,6 +41,12 @@ public class BikeScreen extends JPanel implements Screen
     final String CHECKEDIN = "Check Out";
     final String CHECKEDOUT = "Check In";
 
+    public static JLabel LabelMaker(String text, int gridx, int gridy) {
+        JLabel l = new JLabel(text);
+        l.setFont(new Font("Georgia", Font.PLAIN, 14));
+        return l;
+    }
+
     public BikeScreen(View view, ActionListener mainListener)
     {
         v = view;
@@ -50,55 +56,67 @@ public class BikeScreen extends JPanel implements Screen
         home.addActionListener(mainListener);
         add(home, v.getConstraint(0, 0, 1, GridBagConstraints.NORTHWEST));
 
-        add(new JLabel("Name: "), v.getConstraint(0, 1, 1, GridBagConstraints.EAST));
+        JLabel l;
+        String[] labels = new String[] {
+            "Name", "Make", "Model", "Color", "Serial Number", "Key Number", "Date", "New"
+        };
+        for (int i = 0; i < labels.length; i++) {
+            l = new JLabel(labels[i] + ": ");
+            l.setFont(new Font("Georgia", Font.PLAIN, 14));
+            add(l, v.getConstraint(0, (i+1), 1, GridBagConstraints.EAST));
+        }
+
         name = new JTextField();
-        name.setEditable(false);
-        add(name, v.getConstraint(1, 1, 1, GridBagConstraints.WEST));
+        // name.setEditable(false);
+        // add(name, v.getConstraint(1, 1, 1, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL));
         
-        add(new JLabel("Make: "), v.getConstraint(0, 2, 1, GridBagConstraints.EAST));
         make = new JTextField();
-        make.setEditable(false);
-        add(make, v.getConstraint(1, 2, 1, GridBagConstraints.WEST));
+        // make.setEditable(false);
+        // add(make, v.getConstraint(1, 2, 1, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL));
 
-        add(new JLabel("Model: "), v.getConstraint(2, 2, 1, GridBagConstraints.EAST));
         model = new JTextField();
-        model.setEditable(false);
-        add(model, v.getConstraint(3, 2, 1, GridBagConstraints.WEST));
+        // model.setEditable(false);
+        // add(model, v.getConstraint(1, 3, 1, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL));
 
-        add(new JLabel("Color: "), v.getConstraint(4, 2, 1, GridBagConstraints.EAST));
         color = new JTextField();
-        color.setEditable(false);
-        add(color, v.getConstraint(5, 2, 1, GridBagConstraints.WEST));
+        // color.setEditable(false);
+        // add(color, v.getConstraint(1, 4, 1, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL));
 
-        add(new JLabel("Serial Number: "), v.getConstraint(0, 3, 1, GridBagConstraints.EAST));
         serial = new JTextField();
-        serial.setEditable(false);
-        add(serial, v.getConstraint(1, 3, 1, GridBagConstraints.WEST));
+        // serial.setEditable(false);
+        // add(serial, v.getConstraint(1, 5, 1, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL));
         
-        add(new JLabel("Key Number: "), v.getConstraint(2, 3, 1, GridBagConstraints.EAST));
         key = new JTextField();
-        key.setEditable(false);
-        add(key, v.getConstraint(3, 3, 1, GridBagConstraints.WEST));
+        // key.setEditable(false);
+        // add(key, v.getConstraint(1, 6, 1, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL));
 
-        add(new JLabel("Date: "), v.getConstraint(4, 3, 1, GridBagConstraints.EAST));
-        date_ = new JTextField();
+        date_ = new AnswerPane(AnswerPane.DATEPICKER);
         date_.setEditable(false);
-        add(date_, v.getConstraint(5, 3, 1, GridBagConstraints.WEST));
+        add(date_, v.getConstraint(1, 7, 1, GridBagConstraints.WEST));
 
-        add(new JLabel("Is new?: "), v.getConstraint(6, 3, 1, GridBagConstraints.EAST));
-        new_ = new JTextField();
+        new_ = new AnswerPane(AnswerPane.BOOLPICKER);
         new_.setEditable(false);
-        add(new_, v.getConstraint(7, 3, 1, GridBagConstraints.WEST));
+        add(new_, v.getConstraint(1, 8, 1, GridBagConstraints.WEST));
+
+        JTextField[] textFields = new JTextField[] {
+            name, make, model, color, serial, key
+        };
+        for (int j = 0; j < textFields.length; j++) {
+            textFields[j].setEditable(false);
+            add(textFields[j], v.getConstraint(
+                1, j+1, 1, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL
+            ));
+        }
 
         checkIn = new JButton();
-        add(checkIn, v.getConstraint(8, 2, 1, GridBagConstraints.CENTER));
+        add(checkIn, v.getConstraint(3, 1, 1, GridBagConstraints.CENTER));
 
-        int textHeight = v.getScreenHeight() - 200;
+        int textHeight = 0; // let GridBagConstraint fill take care of height
         int textWidth = v.getScreenWidth() / 4;
         textWidth -= 20;
 
 
-        add(new JLabel("Work Done:"), v.getConstraint(0, 4));
+        add(new JLabel("Work Done:"), v.getConstraint(2, 2));
 
         workDone = new JTextArea();
 
@@ -109,7 +127,10 @@ public class BikeScreen extends JPanel implements Screen
         workDone.setEditable(false);
         textContainer = new JScrollPane(workDone, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         textContainer.setPreferredSize(new Dimension(textWidth, textHeight));
-        add(textContainer, v.getConstraint(0, 5, 2));
+        GridBagConstraints c = v.getConstraint(2, 3, 2, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
+        c.gridheight = 6;
+        add(textContainer, c);
+        c.gridheight = 1;
 
         CardLayout buttonCards = new CardLayout();
         buttonPane = new JPanel(buttonCards);
@@ -119,11 +140,12 @@ public class BikeScreen extends JPanel implements Screen
             buttonCards.show(buttonPane, "save");
             
             for (JTextComponent t : new JTextComponent[] {
-                make, model, color, serial, name, key, date_,
-                new_, workDone})
-            {
+                make, model, color, serial, name, key, workDone
+            }) {
                 t.setEditable(true);
             }
+            date_.setEditable(true);
+            new_.setEditable(true);
             home.setEnabled(false);
             delete.setEnabled(false);
         });
@@ -137,14 +159,14 @@ public class BikeScreen extends JPanel implements Screen
         buttonPane.add(save, "save");
         buttonCards.show(buttonPane, "edit");
 
-        add(buttonPane, v.getConstraint(3, 1));
+        add(buttonPane, v.getConstraint(2, 0));
         
         delete = new JButton("delete");
         delete.addActionListener((ActionEvent e) -> {
             v.delete(Integer.parseInt(bike[0]));
             mainListener.actionPerformed(e);
         });
-        add(delete, v.getConstraint(4, 1));
+        add(delete, v.getConstraint(3, 0));
 
         checkIn.addActionListener((@SuppressWarnings("unused") ActionEvent e) -> {
             if (checkIn.getText().equals(CHECKEDIN))
@@ -193,21 +215,25 @@ public class BikeScreen extends JPanel implements Screen
             buttonCards.show(buttonPane, "edit");
             int i = 1;
             for (JTextComponent t : new JTextComponent[] {
-                make, model, color, serial, name, key, date_,
-                new_, workDone})
+                make, model, color, serial, name, key})
             {
                 t.setEditable(false);
                 bike[i++] = deleteExtraWhitespace(t.getText());
             }
-            bike[10] = bike[9];
-            if (checkIn.getText().equals(CHECKEDIN))
-            {
-                bike[9] = Boolean.toString(true);
-            }
-            else
-            {
-                bike[9] = Boolean.toString(false);
-            }
+            date_.setEditable(false);
+            new_.setEditable(false);
+            bike[i++] = date_.getText();
+            bike[i++] = new_.getText();
+            // if (checkIn.getText().equals(CHECKEDIN))
+            // {
+            //     bike[9] = Boolean.toString(true);
+            // }
+            // else
+            // {
+            //     bike[9] = Boolean.toString(false);
+            // }
+            bike[i++] = Boolean.toString(checkIn.getText().equals(CHECKEDIN));
+            bike[i++] = workDone.getText();
             bike[2] = bike[2].toLowerCase();
             v.edit(bike);
             home.setEnabled(true);

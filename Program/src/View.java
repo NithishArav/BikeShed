@@ -247,7 +247,7 @@ public class View
             // Private constructor to prevent direct instantiation
         }
 
-        private static GridBagConstraints get(int gridx, int gridy, int gridwidth, int anchor)
+        private static GridBagConstraints get(int gridx, int gridy, int gridwidth, int anchor, int fill)
         {
             if (self == null)
             {
@@ -260,6 +260,7 @@ public class View
             self.gridy = gridy;
             self.gridwidth = gridwidth;
             self.anchor = anchor;
+            self.fill = fill;
 
             return self;
         }
@@ -267,16 +268,21 @@ public class View
         
     public GridBagConstraints getConstraint(int gridx, int gridy)
     {
-        return Constraint.get(gridx, gridy, 1, GridBagConstraints.CENTER);
+        return Constraint.get(gridx, gridy, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE);
     }
 
     public GridBagConstraints getConstraint(int gridx, int gridy, int gridwidth)
     {
-        return Constraint.get(gridx, gridy, gridwidth, GridBagConstraints.CENTER);
+        return Constraint.get(gridx, gridy, gridwidth, GridBagConstraints.CENTER, GridBagConstraints.NONE);
     }
 
     public GridBagConstraints getConstraint(int gridx, int gridy, int gridwidth, int anchor)
     {
-        return Constraint.get(gridx, gridy, gridwidth, anchor);
+        return Constraint.get(gridx, gridy, gridwidth, anchor, GridBagConstraints.NONE);
     }
+
+    public GridBagConstraints getConstraint(int gridx, int gridy, int gridwidth, int anchor, int fill)
+    {
+        return Constraint.get(gridx, gridy, gridwidth, anchor, fill);
+    } 
 }

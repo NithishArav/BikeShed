@@ -1,5 +1,8 @@
 ## Changes
-Change serial and key to stringss
+Reorganized BikeScreen to make more readable
+Changed fonts in BikeScreen
+Changed intializers in BikeScreen to be in for loops
+Fixed bug where months would decrease by one every time edits are saved. 
 
 ## To do:
 Generate report file

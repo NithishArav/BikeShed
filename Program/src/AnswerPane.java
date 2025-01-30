@@ -162,7 +162,7 @@ public class AnswerPane extends JPanel
             date = y;
             date = "0".repeat(4 - date.length()) + date + "-";
 
-            int m = month.getSelectedIndex();
+            int m = month.getSelectedIndex() + 1;
             if (m < 10)
                 {date = date + "0";}
             date = date + Integer.toString(m) + "-";
@@ -181,13 +181,20 @@ public class AnswerPane extends JPanel
                 t = LocalDate.now().toString();
             }
             year.setText(t.substring(0, 4));
-            month.setSelectedIndex(Integer.parseInt(t.substring(5, 7)));
+            month.setSelectedIndex(Integer.parseInt(t.substring(5, 7))-1);
             day.setSelectedItem(Integer.parseInt(t.substring(8, 10)));
         }
 
         private static boolean isLeapYear(int y)
         {
             return ((y%400) == 0 || ((y%4) == 0) && ((y%100) == 0));
+        }
+
+        public void setEditable(boolean b)
+        {
+            year.setEditable(b);
+            month.setEditable(b);
+            day.setEditable(b);
         }
     }
 
@@ -271,5 +278,13 @@ public class AnswerPane extends JPanel
     public String getType()
     {
         return type;
+    }
+
+    public void setEditable(boolean b)
+    {
+        switch (type) {
+            case DATEPICKER -> datePicker.setEditable(b);
+            case BOOLPICKER -> boolPicker.setEditable(b);
+        }
     }
 }
