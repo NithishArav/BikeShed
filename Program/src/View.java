@@ -285,4 +285,11 @@ public class View
     {
         return Constraint.get(gridx, gridy, gridwidth, anchor, fill);
     } 
+
+    public static JLabel newLabel(String text, Font f)
+    {
+        JLabel l = new JLabel(text);
+        l.setFont(f);
+        return l;
+    }
 }

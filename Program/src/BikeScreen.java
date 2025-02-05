@@ -91,11 +91,11 @@ public class BikeScreen extends JPanel implements Screen
         // add(key, v.getConstraint(1, 6, 1, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL));
 
         date_ = new AnswerPane(AnswerPane.DATEPICKER);
-        date_.setEditable(false);
+        date_.setEnabled(false);
         add(date_, v.getConstraint(1, 7, 1, GridBagConstraints.WEST));
 
         new_ = new AnswerPane(AnswerPane.BOOLPICKER);
-        new_.setEditable(false);
+        new_.setEnabled(false);
         add(new_, v.getConstraint(1, 8, 1, GridBagConstraints.WEST));
 
         JTextField[] textFields = new JTextField[] {
@@ -144,8 +144,8 @@ public class BikeScreen extends JPanel implements Screen
             }) {
                 t.setEditable(true);
             }
-            date_.setEditable(true);
-            new_.setEditable(true);
+            date_.setEnabled(true);
+            new_.setEnabled(true);
             home.setEnabled(false);
             delete.setEnabled(false);
         });
@@ -220,8 +220,8 @@ public class BikeScreen extends JPanel implements Screen
                 t.setEditable(false);
                 bike[i++] = deleteExtraWhitespace(t.getText());
             }
-            date_.setEditable(false);
-            new_.setEditable(false);
+            date_.setEnabled(false);
+            new_.setEnabled(false);
             bike[i++] = date_.getText();
             bike[i++] = new_.getText();
             // if (checkIn.getText().equals(CHECKEDIN))

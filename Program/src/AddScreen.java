@@ -1,7 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.time.format.DateTimeParseException;
-
+import java.util.Arrays;
 import javax.swing.*;
 
 
@@ -62,6 +62,7 @@ public class AddScreen extends JPanel implements Screen
 
         nextButton = new JButton("next");
         nextButton.addActionListener((@SuppressWarnings("unused") ActionEvent e) -> {
+            System.out.println(Arrays.toString(answers));
             if (updateAnswers())
             {
                 qNum++;
@@ -69,7 +70,7 @@ public class AddScreen extends JPanel implements Screen
                     answerPane.switchType(AnswerPane.DATEPICKER);
                 }
                 questionPane.setText(questions[qNum]);
-                answerPane.setText("");
+                answerPane.setText(answers[qNum]);
                 answerPane.requestFocusInWindow();
 
                 if (qNum+1 == Bike.NUM_PARAMS-3)
@@ -88,7 +89,7 @@ public class AddScreen extends JPanel implements Screen
             {
                 qNum--;
                 questionPane.setText(questions[qNum]);
-                answerPane.setText("");
+                answerPane.setText(answers[qNum]);
                 answerPane.requestFocusInWindow();
                 if (qNum-1 == 0)
                 {
@@ -101,6 +102,9 @@ public class AddScreen extends JPanel implements Screen
             }
             nextButton.setEnabled(true);
             submit.setEnabled(false);
+            if (qNum == 0) {
+                backButton.setEnabled(false);
+            }
         });
         add(backButton, v.getConstraint(0, 3));
 
@@ -161,6 +165,7 @@ public class AddScreen extends JPanel implements Screen
             }
             default -> {}
         }
+        System.out.println(input);
         answers[qNum+1] = input;
         return true;
     }

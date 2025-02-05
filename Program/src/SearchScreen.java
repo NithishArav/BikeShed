@@ -58,21 +58,29 @@ public class SearchScreen extends JPanel implements Screen
 
         setLayout(new GridBagLayout());
 
+        Font f = new Font("Georgia", 14, Font.PLAIN);
+
         searchInput = new JTextField();
         searchInput.setPreferredSize(new Dimension(v.getScreenWidth()-20, 30));
+        // searchInput.setFont(f);
 
         homeButton = new JButton("home");
         homeButton.addActionListener(mainListener);
+        // homeButton.setFont(new Font("Gerogia", 12, Font.PLAIN));
 
-        add(homeButton, v.getConstraint(0, 0));
+        add(homeButton, v.getConstraint(0, 0, 1, GridBagConstraints.NORTHWEST));
 
         add(searchInput, v.getConstraint(0, 1, 6));
 
-        add(new JLabel("Search in:"), v.getConstraint(0, 2));
+        GridBagConstraints c = v.getConstraint(0, 2);
+        c.weightx = 4.0;
+        add(View.newLabel("Search in:", f), c);
+        c.weightx = 1.0;
+
         searchParam = new JComboBox<>(searchItems.keySet().toArray(new String[searchItems.size()]));
         add(searchParam, v.getConstraint(0, 3));
         
-        add(new JLabel("Filter by:"), v.getConstraint(1, 2));
+        add(View.newLabel("Filter by:", f), v.getConstraint(1, 2));
         filterParam = new JComboBox<>(filterParams.keySet().toArray(new String[filterParams.size()]));
         filterInput = new JComboBox<>(filterItems.get(DATE));
         filterValue = new JTextField(5);
@@ -125,7 +133,7 @@ public class SearchScreen extends JPanel implements Screen
             v.update();
         });
 
-        add(searchButton, v.getConstraint(0, 4, 4));
+        add(searchButton, v.getConstraint(0, 4, 4, GridBagConstraints.CENTER, GridBagConstraints.BOTH));
 
         dbPane = new JScrollPane(myLabel);
         dbPane.setPreferredSize(new Dimension(v.getScreenWidth()-20, v.getScreenHeight()-400));

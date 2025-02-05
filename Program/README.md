@@ -1,8 +1,7 @@
 ## Changes
-Reorganized BikeScreen to make more readable
-Changed fonts in BikeScreen
-Changed intializers in BikeScreen to be in for loops
-Fixed bug where months would decrease by one every time edits are saved. 
+Text of unselectable combobox remains black
+Added newLabel method to View
+Added fonts and fills to SearchScreen
 
 ## To do:
 Generate report file

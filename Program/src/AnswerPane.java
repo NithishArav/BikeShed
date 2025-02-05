@@ -1,4 +1,6 @@
 import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.event.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -21,6 +23,16 @@ public class AnswerPane extends JPanel
     private CardLayout cards;
 
     private String type;
+
+    private static DefaultListCellRenderer getComboBoxEditor() {
+        return new DefaultListCellRenderer() {
+            @Override
+            public void paint(Graphics g) {
+                setForeground(Color.BLACK);
+                super.paint(g);
+            }
+        };
+    }
 
     public AnswerPane(String type)
     {
@@ -118,7 +130,10 @@ public class AnswerPane extends JPanel
                 dayNames.put(i, new DefaultComboBoxModel<>(dayArray));
             }
             month = new JComboBox<>(monthNames);
+            month.setRenderer(getComboBoxEditor());
+
             day = new JComboBox<>(dayNames.get(31));
+            day.setRenderer(getComboBoxEditor());
             month.addActionListener((@SuppressWarnings("unused") ActionEvent e) -> 
             {   
                 String selectedItem = (String)month.getSelectedItem();
@@ -196,6 +211,12 @@ public class AnswerPane extends JPanel
             month.setEditable(b);
             day.setEditable(b);
         }
+
+        public void setEnabled(boolean b) {
+            year.setEditable(b);
+            month.setEnabled(b);
+            day.setEnabled(b);
+        }
     }
 
     private class BoolPicker extends JComboBox<String>
@@ -205,6 +226,7 @@ public class AnswerPane extends JPanel
         public BoolPicker()
         {
             super(options);
+            setRenderer(getComboBoxEditor());
         }
 
         public String getText()
@@ -278,6 +300,13 @@ public class AnswerPane extends JPanel
     public String getType()
     {
         return type;
+    }
+
+    public void setEnabled(boolean b) {
+        switch (type) {
+            case DATEPICKER -> datePicker.setEnabled(b);
+            case BOOLPICKER -> boolPicker.setEnabled(b);
+        }
     }
 
     public void setEditable(boolean b)
